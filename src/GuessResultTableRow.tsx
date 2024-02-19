@@ -51,7 +51,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
 
     return (
         <div className="flex text-white text-left">
-            <div className="w-1/3 border-r pl-1">
+            <div className="w-1/3 border-r  p-2">
                 <Box
                     sx={{
                         '& > img': { mr: 2, flexShrink: 0 },
@@ -68,14 +68,14 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                 </Box>
             </div>
             <div
-                className={`w-1/3 border-r pl-1 flex  ${
+                className={`w-1/3 border-r  flex p-2  ${
                     rowStatuses.find((x) => x.cat == 'team')?.color
                 } `}
             >
                 <div className="mx-auto">{teamAnswer?.value}</div>
             </div>
             <div
-                className={`w-1/6 border-r pl-1 flex  ${
+                className={`w-1/6 border-r  flex p-2  ${
                     rowStatuses.find((x) => x.cat == 'age')?.color
                 } `}
             >
@@ -91,17 +91,11 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                 </div>
             </div>
             <div
-                className={`w-1/6 border-r pl-1 flex  ${
+                className={`w-1/6 border-r flex p-2 ${
                     rowStatuses.find((x) => x.cat == 'position')?.color
                 } `}
             >
-                <div className="mx-auto">
-                    {' '}
-                    {
-                        row.guessAnswers.find((x) => x.category == 'position')
-                            ?.value
-                    }
-                </div>
+                <div className="mx-auto">{positionAnswer?.value}</div>
             </div>
         </div>
     )

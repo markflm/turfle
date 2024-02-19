@@ -35,7 +35,7 @@ export default function GuessResultTable(props: GuessResultTableProps) {
                 <div className="w-1/3 border-r pl-1">{'Guess'}</div>
                 <div className="w-1/3 border-r pl-1">Team</div>
                 <div className="w-1/6 border-r pl-1">Age</div>
-                <div className="w-1/6 border-r pl-1">Position</div>
+                <div className="w-1/6  pl-1">Position</div>
             </div>
             {guessesTemp.map((guess) => (
                 <GuessResultTableRow row={guess}></GuessResultTableRow>

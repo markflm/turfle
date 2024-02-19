@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from 'react-query'
-import { getAllPlayers } from './db/supabase-client'
-import { Autocomplete, Box, TextField } from '@mui/material'
+import { checkGuess, getAllPlayers } from './db/supabase-client'
+import { Autocomplete, Box, Button, TextField } from '@mui/material'
 import GuessResultTable from './GuessResultTable'
 import { PlayerOption } from './types/PlayerOption'
 import { useState } from 'react'
@@ -17,18 +17,28 @@ export default function GameTable() {
         }
     )
 
+    const submitGuess = useMutation(checkGuess)
+
     // const sendGuess = useMutation(
 
     // })
 
     // console.log('all players')
     // console.log(playerValues)
+
+    async function handleGuess() {
+        console.log('curr selected guy is')
+        console.log(selectedPlayer)
+        if (!selectedPlayer) return
+        await submitGuess.mutateAsync(selectedPlayer.playerId)
+        console.log(submitGuess.data)
+    }
     return (
         <div className="flex h-full">
-            <div className="m-auto">
+            <div className="m-auto flex flex-col">
                 <GuessResultTable></GuessResultTable>
                 <Autocomplete
-                    sx={{ width: 300, marginX: '25%' }}
+                    sx={{ width: 300, marginX: 'auto' }}
                     options={playerValues ?? []}
                     autoHighlight
                     onChange={(e, newValue) => setSelectedPlayer(newValue)}
@@ -59,6 +69,18 @@ export default function GameTable() {
                         />
                     )}
                 />
+                <Button
+                    sx={{
+                        marginX: 'auto',
+                        marginTop: 2,
+                        padding: 2,
+                        minWidth: '10rem',
+                    }}
+                    variant="contained"
+                    onClick={handleGuess}
+                >
+                    Guess
+                </Button>
             </div>
         </div>
     )

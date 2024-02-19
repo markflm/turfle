@@ -12,12 +12,13 @@ type dbPosition = Database['public']['Tables']['positions']['Row']
 export const supaClient = createClient<Database>(supabaseUrl, supabaseKey)
 
 export async function checkGuess(playerId: number) {
-    const dbPlayer = await supaClient
-        .from('players')
-        .select('*')
-        .eq('id', playerId)
-
-    return dbPlayer
+    console.log('id sent to checkguess ' + playerId)
+    const { data, error } = await supaClient.rpc('checkguess', {
+        guess_id: playerId,
+    })
+    console.log(error)
+    console.log(data)
+    return data
 }
 
 //todo - add error handling
