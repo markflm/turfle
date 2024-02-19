@@ -14,3 +14,7 @@ export async function checkGuess(playerId: number) {
     console.log('db player')
     return dbPlayer
 }
+
+export async function getAllPlayers() {
+    return supaClient.from('players').select()
+}

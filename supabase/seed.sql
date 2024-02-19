@@ -1,0 +1,2 @@
+insert into teams (name, conference, division)
+values ('Cincinatti Bengals', 'AFC', 'North'), ('Baltimore Ravens', 'AFC', 'North'), ('Pittsburgh Steelers', 'AFC', 'North'), ('Cleveland Browns', 'AFC', 'North');
