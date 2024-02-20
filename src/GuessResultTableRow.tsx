@@ -32,7 +32,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                     color = 'bg-amber-400'
                     break
                 case 'very close':
-                    color = 'bg-lime-300'
+                    color = 'bg-lime-500'
                     break
                 case 'miss':
                     color = 'bg-red-600'
@@ -50,8 +50,8 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
     )
 
     return (
-        <div className="flex text-white text-left">
-            <div className="w-1/3 border-r  p-2">
+        <div className="flex text-white border-b">
+            <div className="w-1/3 border-r p-2">
                 <Box
                     sx={{
                         '& > img': { mr: 2, flexShrink: 0 },
@@ -61,7 +61,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                 >
                     <img
                         loading="eager"
-                        width="20"
+                        width="32"
                         src={row.guessedPlayer.logoUrl}
                     />
                     | {row.guessedPlayer.name} | {row.guessedPlayer.position}

@@ -25,6 +25,9 @@ will need to re-run this to get full type support if db schema changes
 supabase generated types don't seem to be able to be set 1:1 relationships. was pulling out individual objects that the auto generated types thought were arrays.
 https://github.com/supabase/cli/issues/736#issuecomment-1434167982
 
+postgres datediff
+https://www.commandprompt.com/education/postgresql-datediff-datetime-difference-in-years-months-etc/
+
 ## vite boilerplate below
 
 # React + TypeScript + Vite

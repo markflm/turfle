@@ -46,7 +46,10 @@ create table
 --only exists to provide a format for the return value of below postgres function
   create table
   public.response (
-    name text null,
+    name text not null,
+    team_name text not null,
+    position_name text not null,
+    age text not null,
     team_answer text null,
     age_answer text null,
     position_answer text null
@@ -113,6 +116,9 @@ where
 
 return query select
   gp.name,
+  gp.team_name,
+  gp.position_name,
+  gp.age::text age,
   case
     when gp.team = pt.potd_team_id THEN 'correct'
     when gp.conference = pt.potd_team_conference

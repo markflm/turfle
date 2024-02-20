@@ -12,12 +12,10 @@ type dbPosition = Database['public']['Tables']['positions']['Row']
 export const supaClient = createClient<Database>(supabaseUrl, supabaseKey)
 
 export async function checkGuess(playerId: number) {
-    console.log('id sent to checkguess ' + playerId)
     const { data, error } = await supaClient.rpc('checkguess', {
         guess_id: playerId,
     })
-    console.log(error)
-    console.log(data)
+    console.error(error)
     return data
 }
 
@@ -30,9 +28,7 @@ export async function getAllPlayers() {
 
     return playersRaw.data?.map((data) => {
         return {
-            // logoUrl: data.teams.logo_url,
-            logoUrl:
-                'https://www.si.com/.image/c_fit%2Ccs_srgb%2Cq_auto:good%2Cw_72/MTcwNzkzMDQ4MDY1Nzc4OTUw/cincinnati-bengals-logo.webp',
+            logoUrl: data.teams.logo_url,
             name: data.name,
             position: data.positions.name,
             playerId: data.id,

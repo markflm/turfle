@@ -128,22 +128,31 @@ export interface Database {
       }
       response: {
         Row: {
+          age: string
           age_answer: string | null
-          name: string | null
+          name: string
           position_answer: string | null
+          position_name: string
           team_answer: string | null
+          team_name: string
         }
         Insert: {
+          age: string
           age_answer?: string | null
-          name?: string | null
+          name: string
           position_answer?: string | null
+          position_name: string
           team_answer?: string | null
+          team_name: string
         }
         Update: {
+          age?: string
           age_answer?: string | null
-          name?: string | null
+          name?: string
           position_answer?: string | null
+          position_name?: string
           team_answer?: string | null
+          team_name?: string
         }
         Relationships: []
       }
@@ -184,10 +193,13 @@ export interface Database {
           guess_id: number
         }
         Returns: {
+          age: string
           age_answer: string | null
-          name: string | null
+          name: string
           position_answer: string | null
+          position_name: string
           team_answer: string | null
+          team_name: string
         }[]
       }
     }
