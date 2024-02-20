@@ -1,5 +1,5 @@
-insert into teams (name, conference, division)
-values ('Cincinatti Bengals', 'AFC', 'North'), ('Baltimore Ravens', 'AFC', 'North'), ('Pittsburgh Steelers', 'AFC', 'North'), ('Cleveland Browns', 'AFC', 'North');
+insert into teams (name, conference, division, logo_url)
+values ('Cincinatti Bengals', 'AFC', 'North', 'bengals.png'), ('Baltimore Ravens', 'AFC', 'North', 'ravens.png'), ('Pittsburgh Steelers', 'AFC', 'North', 'steelers.png'), ('Cleveland Browns', 'AFC', 'North', 'browns.png');
 
 insert into positions (side, name)
 values ('Offense', 'QB'), ('Offense', 'WR'), 

@@ -88,7 +88,7 @@ export default function GameTable() {
                                 <img
                                     loading="eager"
                                     width="32"
-                                    src={option.logoUrl}
+                                    src={`${window.location.href}/${option.logoUrl}`}
                                     alt=""
                                 />
                                 | {option.name} | {option.position}

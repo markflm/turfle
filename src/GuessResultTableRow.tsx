@@ -62,7 +62,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                     <img
                         loading="eager"
                         width="32"
-                        src={row.guessedPlayer.logoUrl}
+                        src={`${window.location.href}/${row.guessedPlayer.logoUrl}`}
                     />
                     | {row.guessedPlayer.name} | {row.guessedPlayer.position}
                 </Box>
