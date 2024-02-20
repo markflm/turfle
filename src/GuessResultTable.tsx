@@ -23,7 +23,10 @@ export default function GuessResultTable(props: GuessResultTableProps) {
                 </div>
             </div>
             {guesses.map((guess) => (
-                <GuessResultTableRow row={guess}></GuessResultTableRow>
+                <GuessResultTableRow
+                    key={guess.guessedPlayer.playerId}
+                    row={guess}
+                ></GuessResultTableRow>
             ))}
         </div>
     )

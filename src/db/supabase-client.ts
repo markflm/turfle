@@ -15,7 +15,9 @@ export async function checkGuess(playerId: number) {
     const { data, error } = await supaClient.rpc('checkguess', {
         guess_id: playerId,
     })
-    console.error(error)
+    if (error) {
+        console.error(error)
+    }
     return data
 }
 

@@ -1,5 +1,5 @@
 import { Box } from '@mui/material'
-import { Answer, Categories, CategoryStatus } from './types/Answer'
+import { Answer, Categories } from './types/Answer'
 import { PlayerOption } from './types/PlayerOption'
 import { useMemo, useState } from 'react'
 
@@ -62,7 +62,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                     <img
                         loading="eager"
                         width="32"
-                        src={`${window.location.href}/${row.guessedPlayer.logoUrl}`}
+                        src={`${window.location.href}/logos/${row.guessedPlayer.logoUrl}`}
                     />
                     | {row.guessedPlayer.name} | {row.guessedPlayer.position}
                 </Box>

@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import { GuessRow } from './GuessResultTableRow'
 import { CategoryStatus } from './types/Answer'
 
-const guessLimit = 3
+const guessLimit = 4
 
 export default function GameTable() {
     const [selectedPlayer, setSelectedPlayer] = useState<PlayerOption | null>(
@@ -57,6 +57,7 @@ export default function GameTable() {
                     },
                 ],
             })
+            setSelectedPlayer(null)
             setGuessResults(existingGuesses)
         }
     }, [submitGuess.isSuccess])
@@ -68,8 +69,15 @@ export default function GameTable() {
         if (!selectedPlayer) return
         await submitGuess.mutateAsync(selectedPlayer.playerId)
     }
+
+    //used to pass style to MUI guess input inputProps
+    const inputStyle = {
+        fontFamily: "'Rubik', sans-serif",
+        fontWeight: 400,
+        fontStyle: 'normal',
+    }
     return (
-        <div className="flex h-full">
+        <div className="flex h-full rubik-font-dropdown">
             {!getAllPlayersLoading && (
                 <div className="m-auto flex flex-col">
                     <GuessResultTable guesses={guessResults}></GuessResultTable>
@@ -78,29 +86,40 @@ export default function GameTable() {
                         options={playerValues ?? []}
                         autoHighlight
                         onChange={(e, newValue) => setSelectedPlayer(newValue)}
+                        value={selectedPlayer}
                         getOptionLabel={(option) => option.name}
                         renderOption={(props, option) => (
-                            <Box
-                                component="li"
-                                sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
-                                {...props}
+                            <div
+                                key={`autocomplete_${option.playerId}`}
+                                className="rubik-font-dropdown"
                             >
-                                <img
-                                    loading="eager"
-                                    width="32"
-                                    src={`${window.location.href}/${option.logoUrl}`}
-                                    alt=""
-                                />
-                                | {option.name} | {option.position}
-                            </Box>
+                                <Box
+                                    component="li"
+                                    sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
+                                    {...props}
+                                >
+                                    <img
+                                        loading="eager"
+                                        width="32"
+                                        src={`${window.location.href}/logos/${option.logoUrl}`}
+                                        alt=""
+                                    />
+                                    | {option.name} | {option.position}
+                                </Box>
+                            </div>
                         )}
                         renderInput={(params) => (
                             <TextField
-                                sx={{ bgcolor: 'whitesmoke', borderRadius: 2 }}
+                                sx={{
+                                    fontFamily: 'inherit',
+                                    bgcolor: 'white',
+                                    borderRadius: 2,
+                                }}
                                 {...params}
                                 placeholder="Select a Player"
                                 inputProps={{
                                     ...params.inputProps,
+                                    style: inputStyle,
                                 }}
                             />
                         )}
@@ -116,7 +135,7 @@ export default function GameTable() {
                         onClick={handleGuess}
                         disabled={submitGuess.isLoading}
                     >
-                        Guess
+                        <span className="rubik-font-dropdown"> Guess</span>
                     </Button>
                 </div>
             )}

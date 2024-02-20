@@ -5,3 +5,10 @@
 .game-table {
     width: 800px;
 }
+
+.rubik-font-dropdown {
+    font-family: 'Rubik', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+}
