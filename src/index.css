@@ -13,6 +13,13 @@
     font-style: normal;
 }
 
+.rubik-font-tooltip {
+    font-family: 'Rubik', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+}
+
 @keyframes rollout {
     0% {
         transform: rotateX(180deg);

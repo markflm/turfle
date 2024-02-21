@@ -1,8 +1,9 @@
-import { Box } from '@mui/material'
+import { Box, Tooltip } from '@mui/material'
 import { Answer, Categories } from './types/Answer'
 import { PlayerOption } from './types/PlayerOption'
 import { useEffect, useMemo, useState } from 'react'
 import { standardDelayMs } from './utils/global'
+import TeamSameConference from './tooltips/TeamSameConference'
 
 export type GuessResultTableRowProps = {
     row: GuessRow
@@ -75,7 +76,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
     )
 
     return (
-        <div className="flex text-white border-b ">
+        <div className="flex text-white border-b">
             <div
                 id={`guessname_${row.guessedPlayer.playerId}`}
                 className="w-1/3 border-r p-2 invisible"
@@ -95,14 +96,16 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                     | {row.guessedPlayer.name} | {row.guessedPlayer.position}
                 </Box>
             </div>
-            <div
-                id={`guessteam_${row.guessedPlayer.playerId}`}
-                className={`w-1/3 border-r flex p-2 invisible ${
-                    rowStatuses.find((x) => x.cat == 'team')?.color
-                } `}
-            >
-                <div className="mx-auto">{teamAnswer?.value}</div>
-            </div>
+            <Tooltip title={TeamSameConference()}>
+                <div
+                    id={`guessteam_${row.guessedPlayer.playerId}`}
+                    className={`w-1/3 border-r flex p-2 invisible ${
+                        rowStatuses.find((x) => x.cat == 'team')?.color
+                    } `}
+                >
+                    <div className="mx-auto">{teamAnswer?.value}</div>
+                </div>
+            </Tooltip>
             <div
                 id={`guessage_${row.guessedPlayer.playerId}`}
                 className={`w-1/6 border-r flex p-2 invisible  ${
