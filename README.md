@@ -13,7 +13,7 @@ make sure Docker is running, then run `npx supabase init` and `npx supabase star
 after supabase is running, migrations/seeding data can be run with `npx supabase db reset`
 more info: https://supabase.com/docs/guides/cli/local-development
 
-generate types from db - npx supabase gen types typescript --local > ./src/database.types.ts
+generate types from db - npx supabase gen types typescript --local > ./src/db/database.types.ts
 will need to re-run this to get full type support if db schema changes
 
 # finally, run vite

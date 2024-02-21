@@ -37,3 +37,12 @@ export async function getAllPlayers() {
         } as PlayerOption
     })
 }
+
+export async function getPotd() {
+    const { data, error } = await supaClient.rpc('getpotd')
+    if (error) {
+        console.error(error)
+    }
+    if (!data) return
+    return data[0]
+}

@@ -1,7 +1,8 @@
 import { Box } from '@mui/material'
 import { Answer, Categories } from './types/Answer'
 import { PlayerOption } from './types/PlayerOption'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { standardDelayMs } from './utils/global'
 
 export type GuessResultTableRowProps = {
     row: GuessRow
@@ -43,6 +44,30 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
         setRowStatuses(rowStats)
     }, [row])
 
+    useEffect(() => {
+        const idprefixes = [
+            'guessname_',
+            'guessteam_',
+            'guessage_',
+            'guessposition_',
+        ]
+        for (let i = 0; i <= 3; i++) {
+            setTimeout(
+                () => {
+                    const element = document.getElementById(
+                        `${idprefixes[i]}${row.guessedPlayer.playerId}`
+                    )
+
+                    element?.classList.add('roll-out')
+                    setTimeout(() => {
+                        element?.classList.remove('invisible')
+                    }, 400)
+                },
+                i == 0 ? 0 : standardDelayMs * i
+            )
+        }
+    }, [])
+
     const teamAnswer = row.guessAnswers.find((x) => x.category == 'team')
     const ageAnswer = row.guessAnswers.find((x) => x.category == 'age')
     const positionAnswer = row.guessAnswers.find(
@@ -50,8 +75,11 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
     )
 
     return (
-        <div className="flex text-white border-b roll-out">
-            <div className="w-1/3 border-r p-2">
+        <div className="flex text-white border-b ">
+            <div
+                id={`guessname_${row.guessedPlayer.playerId}`}
+                className="w-1/3 border-r p-2 invisible"
+            >
                 <Box
                     sx={{
                         '& > img': { mr: 2, flexShrink: 0 },
@@ -68,14 +96,16 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                 </Box>
             </div>
             <div
-                className={`w-1/3 border-r  flex p-2  ${
+                id={`guessteam_${row.guessedPlayer.playerId}`}
+                className={`w-1/3 border-r flex p-2 invisible ${
                     rowStatuses.find((x) => x.cat == 'team')?.color
                 } `}
             >
                 <div className="mx-auto">{teamAnswer?.value}</div>
             </div>
             <div
-                className={`w-1/6 border-r  flex p-2  ${
+                id={`guessage_${row.guessedPlayer.playerId}`}
+                className={`w-1/6 border-r flex p-2 invisible  ${
                     rowStatuses.find((x) => x.cat == 'age')?.color
                 } `}
             >
@@ -91,7 +121,8 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                 </div>
             </div>
             <div
-                className={`w-1/6 border-r flex p-2 ${
+                id={`guessposition_${row.guessedPlayer.playerId}`}
+                className={`w-1/6 border-r flex p-2 invisible ${
                     rowStatuses.find((x) => x.cat == 'position')?.color
                 } `}
             >

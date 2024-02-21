@@ -1,19 +1,21 @@
 import { useMutation, useQuery } from 'react-query'
-import { checkGuess, getAllPlayers } from './db/supabase-client'
+import { checkGuess, getAllPlayers, getPotd } from './db/supabase-client'
 import { Autocomplete, Box, Button, TextField } from '@mui/material'
 import GuessResultTable from './GuessResultTable'
 import { PlayerOption } from './types/PlayerOption'
 import { useEffect, useState } from 'react'
 import { GuessRow } from './GuessResultTableRow'
 import { CategoryStatus } from './types/Answer'
+import { standardDelayMs } from './utils/global'
 
-const guessLimit = 4
+const guessLimit = 2
 
 export default function GameTable() {
     const [selectedPlayer, setSelectedPlayer] = useState<PlayerOption | null>(
         null
     )
     const [guessResults, setGuessResults] = useState<GuessRow[]>([])
+    const [isGameOver, setIsGameOver] = useState<boolean>(false)
 
     const { data: playerValues, isLoading: getAllPlayersLoading } = useQuery(
         ['all_players'],
@@ -22,13 +24,77 @@ export default function GameTable() {
         }
     )
 
+    const { data: potd, isLoading: getPotdLoading } = useQuery(
+        ['potd'],
+        async () => {
+            return await getPotd()
+        },
+        { staleTime: 1000 * 60 * 5 }
+    )
+
     const submitGuess = useMutation(checkGuess)
 
     useEffect(() => {
-        if (guessResults.length >= guessLimit) {
-            console.log('games over pal')
-            //trigger game over sequence
+        const lastExistingGuess = localStorage.getItem('turfle-time')
+        //if you have guesses but they're older than midnight yesterday (EST), clear your localstorage
+        if (lastExistingGuess) {
+            const d = new Date()
+            d.setHours(0, 0, 0, 0)
+            if (parseInt(lastExistingGuess) < d.valueOf()) {
+                localStorage.clear()
+            }
+            const existingGuesses = localStorage.getItem('turfle-guesses')
+            if (existingGuesses) {
+                //todo - maybe check that existingGuesses haven't been tampered with
+                setGuessResults(JSON.parse(existingGuesses))
+            }
         }
+    }, [])
+
+    useEffect(() => {
+        if (guessResults.length) {
+            localStorage.setItem('turfle-guesses', JSON.stringify(guessResults))
+            localStorage.setItem('turfle-time', Date.now().toString())
+        }
+
+        if (guessResults.length == guessLimit) {
+            console.log('games over pal')
+            console.log('potd')
+            console.log(potd)
+            // if (!potd) return
+            // const existingGuesses = [...guessResults]
+            // const pullPlayerFromAllPlayers = playerValues?.find(
+            //     (x) => x.playerId == potd.player_id
+            // )
+            // if (!pullPlayerFromAllPlayers) return
+            // existingGuesses.push({
+            //     guessedPlayer: pullPlayerFromAllPlayers,
+            //     guessAnswers: [
+            //         {
+            //             category: 'team',
+            //             status: 'correct',
+            //             value: potd.team_name,
+            //         },
+            //         {
+            //             category: 'age',
+            //             status: 'correct',
+            //             value: potd.age,
+            //         },
+            //         {
+            //             category: 'position',
+            //             status: 'correct',
+            //             value: potd.position_name,
+            //         },
+            //     ],
+            // })
+            //trigger game over sequence
+
+            setIsGameOver(true)
+            // setTimeout(() => {
+            //     setGuessResults(existingGuesses)
+            // }, standardDelayMs * 4)
+        }
+        if (guessResults.length > guessLimit) return
     }, [guessResults])
 
     useEffect(() => {
@@ -67,6 +133,14 @@ export default function GameTable() {
 
     async function handleGuess() {
         if (!selectedPlayer) return
+        if (
+            guessResults.find(
+                (x) => x.guessedPlayer.playerId === selectedPlayer.playerId
+            )
+        ) {
+            console.error('already guessed this guy state')
+            return
+        }
         await submitGuess.mutateAsync(selectedPlayer.playerId)
     }
 

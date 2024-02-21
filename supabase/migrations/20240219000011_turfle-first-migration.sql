@@ -46,6 +46,7 @@ create table
 --only exists to provide a format for the return value of below postgres function
   create table
   public.response (
+    player_id bigint not null,
     name text not null,
     team_name text not null,
     position_name text not null,
@@ -115,6 +116,7 @@ where
   );
 
 return query select
+gp.id player_id,
   gp.name,
   gp.team_name,
   gp.position_name,

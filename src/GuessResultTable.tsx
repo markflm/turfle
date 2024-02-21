@@ -7,7 +7,7 @@ export default function GuessResultTable(props: GuessResultTableProps) {
     const { guesses } = props
 
     return (
-        <div className="border my-4 tracking-wide rounded-sm bg-slate-800 game-table flex flex-col">
+        <div className="border my-4 tracking-wide rounded-sm bg-slate-900 game-table flex flex-col">
             <div className="flex text-white text-left border-b">
                 <div className="w-1/3 border-r p-2 flex">
                     <div className="mx-auto text-xl">Player</div>
