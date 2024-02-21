@@ -50,7 +50,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
     )
 
     return (
-        <div className="flex text-white border-b">
+        <div className="flex text-white border-b roll-out">
             <div className="w-1/3 border-r p-2">
                 <Box
                     sx={{
