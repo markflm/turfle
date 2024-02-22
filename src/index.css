@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .game-table {
-    width: 800px;
+    width: 900px;
 }
 
 .rubik-font-dropdown {

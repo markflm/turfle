@@ -29,3 +29,7 @@ dist-ssr
 
 #team images
 public/logos/*
+
+#test data
+src/utils/sleeperdata.json
+src/utils/insert-data.ts

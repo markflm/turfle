@@ -16,12 +16,14 @@ export default function GameTable() {
     )
     const [guessResults, setGuessResults] = useState<GuessRow[]>([])
     const [isGameOver, setIsGameOver] = useState<boolean>(false)
+    const [autocompleteInput, setAutocompleteInput] = useState<string>('')
 
     const { data: playerValues, isLoading: getAllPlayersLoading } = useQuery(
         ['all_players'],
         async () => {
             return await getAllPlayers()
-        }
+        },
+        { staleTime: Infinity }
     )
 
     const { data: potd, isLoading: getPotdLoading } = useQuery(
@@ -99,6 +101,7 @@ export default function GameTable() {
 
     useEffect(() => {
         if (submitGuess.isSuccess) {
+            setAutocompleteInput('')
             const existingGuesses = [...guessResults]
             const guessResult = submitGuess.data
             if (!selectedPlayer || !guessResult) return
@@ -128,9 +131,6 @@ export default function GameTable() {
         }
     }, [submitGuess.isSuccess])
 
-    // console.log('all players')
-    // console.log(playerValues)
-
     async function handleGuess() {
         if (!selectedPlayer) return
         if (
@@ -158,9 +158,21 @@ export default function GameTable() {
                     <Autocomplete
                         sx={{ width: 300, marginX: 'auto' }}
                         options={playerValues ?? []}
-                        autoHighlight
                         onChange={(e, newValue) => setSelectedPlayer(newValue)}
                         value={selectedPlayer}
+                        inputValue={selectedPlayer?.name ?? autocompleteInput}
+                        onKeyDown={(e) => {
+                            if (e.key == 'Backspace') {
+                                if (selectedPlayer) {
+                                    setSelectedPlayer(null)
+                                    setAutocompleteInput('')
+                                }
+                            }
+                        }}
+                        onInputCapture={(e) =>
+                            setAutocompleteInput(e.target.value)
+                        }
+                        open={autocompleteInput.length > 2 && !selectedPlayer}
                         getOptionLabel={(option) => option.name}
                         renderOption={(props, option) => (
                             <div

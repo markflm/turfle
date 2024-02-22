@@ -1,8 +1,8 @@
 import { CategoryStatus } from '../types/Answer'
 
 export type TeamSameConferenceProps = {
-    conferenceName: string
-    status: CategoryStatus
+    conferenceName?: string
+    status?: CategoryStatus
 }
 export default function TeamSameConference(props: TeamSameConferenceProps) {
     const { conferenceName, status } = props

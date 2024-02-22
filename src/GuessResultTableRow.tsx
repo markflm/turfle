@@ -7,6 +7,7 @@ import TeamSameConference from './tooltips/TeamSameConference'
 
 export type GuessResultTableRowProps = {
     row: GuessRow
+    isLastRow: boolean
 }
 
 export type GuessRow = {
@@ -18,7 +19,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
     const [rowStatuses, setRowStatuses] = useState<
         { cat: Categories; color: string }[]
     >([])
-    const { row } = props
+    const { row, isLastRow } = props
 
     useMemo(() => {
         const rowStats: { cat: Categories; color: string }[] = []
@@ -31,7 +32,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                 case 'over':
                 case 'under':
                 case 'close':
-                    color = 'bg-amber-400'
+                    color = 'bg-yellow-500'
                     break
                 case 'very close':
                     color = 'bg-lime-500'
@@ -76,10 +77,14 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
     )
 
     return (
-        <div className="flex text-white border-b">
+        <div
+            className={`flex text-white ${
+                !isLastRow ? 'border-b-2' : ''
+            } border-slate-900`}
+        >
             <div
                 id={`guessname_${row.guessedPlayer.playerId}`}
-                className="w-1/3 border-r p-2 invisible"
+                className="w-4/12 border-r-2  border-slate-900 p-2 invisible"
             >
                 <Box
                     sx={{
@@ -93,26 +98,29 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                         width="32"
                         src={`${window.location.href}/logos/${row.guessedPlayer.logoUrl}`}
                     />
-                    | {row.guessedPlayer.name} | {row.guessedPlayer.position}
+                    <div className="my-auto">
+                        | {row.guessedPlayer.name} |{' '}
+                        {row.guessedPlayer.position}{' '}
+                    </div>
                 </Box>
             </div>
-            <Tooltip title={TeamSameConference()}>
+            <Tooltip title={<TeamSameConference></TeamSameConference>}>
                 <div
                     id={`guessteam_${row.guessedPlayer.playerId}`}
-                    className={`w-1/3 border-r flex p-2 invisible ${
+                    className={`w-4/12 border-r-2 border-slate-900 flex p-2 invisible rounded-md ${
                         rowStatuses.find((x) => x.cat == 'team')?.color
                     } `}
                 >
-                    <div className="mx-auto">{teamAnswer?.value}</div>
+                    <div className="m-auto">{teamAnswer?.value}</div>
                 </div>
             </Tooltip>
             <div
                 id={`guessage_${row.guessedPlayer.playerId}`}
-                className={`w-1/6 border-r flex p-2 invisible  ${
+                className={`w-2/12 border-r-2 border-slate-900  flex p-2 invisible rounded-md  ${
                     rowStatuses.find((x) => x.cat == 'age')?.color
                 } `}
             >
-                <div className="mx-auto flex gap-1">
+                <div className="m-auto flex gap-1">
                     {ageAnswer?.value}
                     {ageAnswer?.status === 'correct' ? (
                         <></>
@@ -125,11 +133,11 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
             </div>
             <div
                 id={`guessposition_${row.guessedPlayer.playerId}`}
-                className={`w-1/6 border-r flex p-2 invisible ${
+                className={`w-2/12 border-r-2 border-slate-900 rounded-md flex p-2 invisible ${
                     rowStatuses.find((x) => x.cat == 'position')?.color
                 } `}
             >
-                <div className="mx-auto">{positionAnswer?.value}</div>
+                <div className="m-auto">{positionAnswer?.value}</div>
             </div>
         </div>
     )
