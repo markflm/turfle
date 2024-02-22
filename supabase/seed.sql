@@ -26,7 +26,7 @@ values ('Cincinatti Bengals', 'AFC', 'North', 'CIN', 'bengals.png'),
 ('Atlanta Falcons', 'NFC', 'South', 'ATL', 'falcons.png'),
 ('Carolina Panthers', 'NFC', 'South', 'CAR', 'panthers.png'),
 ('New Orleans Saints', 'NFC', 'South', 'NO', 'saints.png'),
-('Tamp Bay Buccaneers', 'NFC', 'South', 'TB', 'buccs.png'),
+('Tampa Bay Buccaneers', 'NFC', 'South', 'TB', 'buccs.png'),
 ('Arizona Cardinals', 'NFC', 'West', 'ARI', 'cardinals.png'),
 ('Los Angeles Rams', 'NFC', 'West', 'LAR', 'rams.png'),
 ('San Francisco 49ers', 'NFC', 'West', 'SF', 'niners.png'),
@@ -37,8 +37,8 @@ values ('Offense', 'QB'), ('Offense', 'WR'),
 ('Offense', 'RB'), ('Offense', 'TE'), ('Offense', 'OL'), ('Defense', 'S'), ('Defense', 'LB'), ('Defense', 'CB'), ('Defense', 'DL');
 
 
-insert into players (name, team, position, dob)
-values ('Joe Burrow', 1, 1, '1/1/1995'), ('Ja''Marr Chase', 1, 2, '1/1/1996'), ('Joe Mixon', 1, 3, '1/1/1993'), ('Tyler Linderbaum', 2, 5, '1/1/1994'), ('Amari Cooper', 4, 2, '1/1/1989');
+-- insert into players (name, team, position, dob)
+-- values ('Joe Burrow', 1, 1, '1/1/1995'), ('Ja''Marr Chase', 1, 2, '1/1/1996'), ('Joe Mixon', 1, 3, '1/1/1993'), ('Tyler Linderbaum', 2, 5, '1/1/1994'), ('Amari Cooper', 4, 2, '1/1/1989');
 
-insert into potd (date, player_id)
-values ('2024-02-19', 5)
+-- insert into potd (date, player_id)
+-- values ('2024-02-19', 5);

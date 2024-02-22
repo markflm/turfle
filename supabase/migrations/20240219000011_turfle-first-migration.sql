@@ -51,7 +51,10 @@ create table
     player_id bigint not null,
     name text not null,
     team_name text not null,
+    conference text not null,
+    division text not null,
     position_name text not null,
+    position_side text not null,
     age text not null,
     team_answer text null,
     age_answer text null,
@@ -121,7 +124,10 @@ return query select
 gp.id player_id,
   gp.name,
   gp.team_name,
+  gp.conference,
+  gp.division,
   gp.position_name,
+  gp.side position_side,
   gp.age::text age,
   case
     when gp.team = pt.potd_team_id THEN 'correct'

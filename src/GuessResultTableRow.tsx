@@ -20,7 +20,8 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
         { cat: Categories; color: string }[]
     >([])
     const { row, isLastRow } = props
-
+    console.log('row')
+    console.log(row)
     useMemo(() => {
         const rowStats: { cat: Categories; color: string }[] = []
         row.guessAnswers.map((ga) => {
@@ -103,7 +104,13 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                     </div>
                 </Box>
             </div>
-            <Tooltip title={<TeamSameConference></TeamSameConference>}>
+            <Tooltip
+                title={
+                    <TeamSameConference
+                        conferenceName={row.guessAnswers}
+                    ></TeamSameConference>
+                }
+            >
                 <div
                     id={`guessteam_${row.guessedPlayer.playerId}`}
                     className={`w-4/12 border-r-2 border-slate-900 flex p-2 invisible rounded-md ${
