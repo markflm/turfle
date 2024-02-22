@@ -5,14 +5,14 @@ import { useEffect, useMemo, useState } from 'react'
 import { standardDelayMs } from './utils/global'
 import TeamSameConference from './tooltips/TeamSameConference'
 
-export type GuessResultTableRowProps = {
-    row: GuessRow
-    isLastRow: boolean
-}
-
 export type GuessRow = {
     guessedPlayer: PlayerOption
     guessAnswers: Answer[]
+}
+
+export type GuessResultTableRowProps = {
+    row: GuessRow
+    isLastRow: boolean
 }
 
 export default function GuessResultTableRow(props: GuessResultTableRowProps) {
@@ -78,9 +78,9 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
 
     return (
         <div
-            className={`flex text-white ${
+            className={`flex text-white border-slate-900 ${
                 !isLastRow ? 'border-b-2' : ''
-            } border-slate-900`}
+            }`}
         >
             <div
                 id={`guessname_${row.guessedPlayer.playerId}`}
@@ -91,7 +91,6 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                         '& > img': { mr: 2, flexShrink: 0 },
                         display: 'flex',
                     }}
-                    {...props}
                 >
                     <img
                         loading="eager"

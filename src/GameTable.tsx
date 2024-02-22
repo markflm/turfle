@@ -155,6 +155,33 @@ export default function GameTable() {
             {!getAllPlayersLoading && (
                 <div className="m-auto flex flex-col">
                     <GuessResultTable guesses={guessResults}></GuessResultTable>
+                    <div className="flex mb-4 gap-5 mx-auto">
+                        <div
+                            className={`w-5 h-2 ${
+                                guessResults.length < 1 ? 'opacity-30' : ''
+                            } rounded-md bg-white`}
+                        ></div>
+                        <div
+                            className={`w-5 h-2 ${
+                                guessResults.length < 2 ? 'opacity-30' : ''
+                            } rounded-md bg-white`}
+                        ></div>
+                        <div
+                            className={`w-5 h-2 ${
+                                guessResults.length < 3 ? 'opacity-30' : ''
+                            } rounded-md bg-white`}
+                        ></div>
+                        <div
+                            className={`w-5 h-2 ${
+                                guessResults.length < 4 ? 'opacity-30' : ''
+                            } rounded-md bg-white`}
+                        ></div>
+                        <div
+                            className={`w-5 h-2 ${
+                                guessResults.length < 5 ? 'opacity-30' : ''
+                            } rounded-md bg-white`}
+                        ></div>
+                    </div>
                     <Autocomplete
                         sx={{ width: 300, marginX: 'auto' }}
                         options={playerValues ?? []}
@@ -221,7 +248,7 @@ export default function GameTable() {
                         onClick={handleGuess}
                         disabled={submitGuess.isLoading}
                     >
-                        <span className="rubik-font-dropdown"> Guess</span>
+                        <span className="rubik-font-dropdown">Guess</span>
                     </Button>
                 </div>
             )}
