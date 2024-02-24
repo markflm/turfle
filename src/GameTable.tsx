@@ -117,12 +117,19 @@ export default function GameTable() {
                         category: 'position',
                         status: guessResult[0]
                             .position_answer as CategoryStatus,
-                        value: guessResult[0].position_name,
+                        value: {
+                            position: guessResult[0].position_name,
+                            side: guessResult[0].position_side,
+                        },
                     },
                     {
                         category: 'team',
                         status: guessResult[0].team_answer as CategoryStatus,
-                        value: guessResult[0].team_name,
+                        value: {
+                            teamName: guessResult[0].team_name,
+                            division: guessResult[0].division,
+                            conference: guessResult[0].conference,
+                        },
                     },
                 ],
             })
