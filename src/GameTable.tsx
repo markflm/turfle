@@ -6,7 +6,8 @@ import { PlayerOption } from './types/PlayerOption'
 import { useEffect, useState } from 'react'
 import { GuessRow } from './GuessResultTableRow'
 import { CategoryStatus } from './types/Answer'
-import { standardDelayMs } from './utils/global'
+import { additionalGameOverDelayMs, standardDelayMs } from './utils/global'
+import EndGamePopUp from './EndGamePopup'
 
 const guessLimit = 2
 
@@ -16,8 +17,11 @@ export default function GameTable() {
     )
     const [guessResults, setGuessResults] = useState<GuessRow[]>([])
     const [isGameOver, setIsGameOver] = useState<boolean>(false)
+    const [showGameOverModal, setShowGameOverModal] = useState<boolean>(false)
+    const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(false)
     const [autocompleteInput, setAutocompleteInput] = useState<string>('')
 
+    console.log('is game over ' + isGameOver)
     const { data: playerValues, isLoading: getAllPlayersLoading } = useQuery(
         ['all_players'],
         async () => {
@@ -58,43 +62,11 @@ export default function GameTable() {
             localStorage.setItem('turfle-guesses', JSON.stringify(guessResults))
             localStorage.setItem('turfle-time', Date.now().toString())
         }
-
-        if (guessResults.length == guessLimit) {
-            console.log('games over pal')
-            console.log('potd')
-            console.log(potd)
-            // if (!potd) return
-            // const existingGuesses = [...guessResults]
-            // const pullPlayerFromAllPlayers = playerValues?.find(
-            //     (x) => x.playerId == potd.player_id
-            // )
-            // if (!pullPlayerFromAllPlayers) return
-            // existingGuesses.push({
-            //     guessedPlayer: pullPlayerFromAllPlayers,
-            //     guessAnswers: [
-            //         {
-            //             category: 'team',
-            //             status: 'correct',
-            //             value: potd.team_name,
-            //         },
-            //         {
-            //             category: 'age',
-            //             status: 'correct',
-            //             value: potd.age,
-            //         },
-            //         {
-            //             category: 'position',
-            //             status: 'correct',
-            //             value: potd.position_name,
-            //         },
-            //     ],
-            // })
+        if (guessedCorrectly) return //if guess was correct, we've already started the end game process
+        if (guessResults.length >= guessLimit) {
             //trigger game over sequence
 
-            setIsGameOver(true)
-            // setTimeout(() => {
-            //     setGuessResults(existingGuesses)
-            // }, standardDelayMs * 4)
+            endGameWithAnimationDelay()
         }
         if (guessResults.length > guessLimit) return
     }, [guessResults])
@@ -104,6 +76,7 @@ export default function GameTable() {
             setAutocompleteInput('')
             const existingGuesses = [...guessResults]
             const guessResult = submitGuess.data
+            console.log(guessResult)
             if (!selectedPlayer || !guessResult) return
             existingGuesses.push({
                 guessedPlayer: selectedPlayer,
@@ -135,6 +108,10 @@ export default function GameTable() {
             })
             setSelectedPlayer(null)
             setGuessResults(existingGuesses)
+            if (guessResult[0].player_id == potd?.player_id) {
+                setGuessedCorrectly(true)
+                endGameWithAnimationDelay()
+            }
         }
     }, [submitGuess.isSuccess])
 
@@ -157,37 +134,33 @@ export default function GameTable() {
         fontWeight: 400,
         fontStyle: 'normal',
     }
+
+    function endGameWithAnimationDelay() {
+        //wait for animations to play out plus a little extra time to process result, then show game over modal
+        setIsGameOver(true)
+        setTimeout(
+            () => {
+                setShowGameOverModal(true)
+            },
+            standardDelayMs * 4 + additionalGameOverDelayMs
+            //500
+        )
+    }
     return (
         <div className="flex h-full rubik-font-dropdown">
             {!getAllPlayersLoading && (
                 <div className="m-auto flex flex-col">
                     <GuessResultTable guesses={guessResults}></GuessResultTable>
                     <div className="flex mb-4 gap-5 mx-auto">
-                        <div
-                            className={`w-5 h-2 ${
-                                guessResults.length < 1 ? 'opacity-30' : ''
-                            } rounded-md bg-white`}
-                        ></div>
-                        <div
-                            className={`w-5 h-2 ${
-                                guessResults.length < 2 ? 'opacity-30' : ''
-                            } rounded-md bg-white`}
-                        ></div>
-                        <div
-                            className={`w-5 h-2 ${
-                                guessResults.length < 3 ? 'opacity-30' : ''
-                            } rounded-md bg-white`}
-                        ></div>
-                        <div
-                            className={`w-5 h-2 ${
-                                guessResults.length < 4 ? 'opacity-30' : ''
-                            } rounded-md bg-white`}
-                        ></div>
-                        <div
-                            className={`w-5 h-2 ${
-                                guessResults.length < 5 ? 'opacity-30' : ''
-                            } rounded-md bg-white`}
-                        ></div>
+                        {[...Array(guessLimit)].map((e, i) => (
+                            <div
+                                className={`w-5 h-2 ${
+                                    guessResults.length < i + 1
+                                        ? 'opacity-30'
+                                        : ''
+                                } rounded-md bg-white`}
+                            ></div>
+                        ))}
                     </div>
                     <Autocomplete
                         sx={{ width: 300, marginX: 'auto' }}
@@ -253,12 +226,20 @@ export default function GameTable() {
                         }}
                         variant="contained"
                         onClick={handleGuess}
-                        disabled={submitGuess.isLoading}
+                        disabled={submitGuess.isLoading || isGameOver}
                     >
                         <span className="rubik-font-dropdown">Guess</span>
                     </Button>
                 </div>
             )}
+            <EndGamePopUp
+                guesses={guessResults.length}
+                guessLimit={guessLimit}
+                potdName={potd?.name ?? ''}
+                isOpen={showGameOverModal}
+                correct={guessedCorrectly}
+                onClose={() => setShowGameOverModal(false)}
+            ></EndGamePopUp>
         </div>
     )
 }
