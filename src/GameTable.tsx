@@ -16,12 +16,14 @@ export default function GameTable() {
     )
     const [guessResults, setGuessResults] = useState<GuessRow[]>([])
     const [isGameOver, setIsGameOver] = useState<boolean>(false)
+    const [autocompleteInput, setAutocompleteInput] = useState<string>('')
 
     const { data: playerValues, isLoading: getAllPlayersLoading } = useQuery(
         ['all_players'],
         async () => {
             return await getAllPlayers()
-        }
+        },
+        { staleTime: Infinity }
     )
 
     const { data: potd, isLoading: getPotdLoading } = useQuery(
@@ -99,6 +101,7 @@ export default function GameTable() {
 
     useEffect(() => {
         if (submitGuess.isSuccess) {
+            setAutocompleteInput('')
             const existingGuesses = [...guessResults]
             const guessResult = submitGuess.data
             if (!selectedPlayer || !guessResult) return
@@ -114,12 +117,19 @@ export default function GameTable() {
                         category: 'position',
                         status: guessResult[0]
                             .position_answer as CategoryStatus,
-                        value: guessResult[0].position_name,
+                        value: {
+                            position: guessResult[0].position_name,
+                            side: guessResult[0].position_side,
+                        },
                     },
                     {
                         category: 'team',
                         status: guessResult[0].team_answer as CategoryStatus,
-                        value: guessResult[0].team_name,
+                        value: {
+                            teamName: guessResult[0].team_name,
+                            division: guessResult[0].division,
+                            conference: guessResult[0].conference,
+                        },
                     },
                 ],
             })
@@ -127,9 +137,6 @@ export default function GameTable() {
             setGuessResults(existingGuesses)
         }
     }, [submitGuess.isSuccess])
-
-    // console.log('all players')
-    // console.log(playerValues)
 
     async function handleGuess() {
         if (!selectedPlayer) return
@@ -155,12 +162,51 @@ export default function GameTable() {
             {!getAllPlayersLoading && (
                 <div className="m-auto flex flex-col">
                     <GuessResultTable guesses={guessResults}></GuessResultTable>
+                    <div className="flex mb-4 gap-5 mx-auto">
+                        <div
+                            className={`w-5 h-2 ${
+                                guessResults.length < 1 ? 'opacity-30' : ''
+                            } rounded-md bg-white`}
+                        ></div>
+                        <div
+                            className={`w-5 h-2 ${
+                                guessResults.length < 2 ? 'opacity-30' : ''
+                            } rounded-md bg-white`}
+                        ></div>
+                        <div
+                            className={`w-5 h-2 ${
+                                guessResults.length < 3 ? 'opacity-30' : ''
+                            } rounded-md bg-white`}
+                        ></div>
+                        <div
+                            className={`w-5 h-2 ${
+                                guessResults.length < 4 ? 'opacity-30' : ''
+                            } rounded-md bg-white`}
+                        ></div>
+                        <div
+                            className={`w-5 h-2 ${
+                                guessResults.length < 5 ? 'opacity-30' : ''
+                            } rounded-md bg-white`}
+                        ></div>
+                    </div>
                     <Autocomplete
                         sx={{ width: 300, marginX: 'auto' }}
                         options={playerValues ?? []}
-                        autoHighlight
                         onChange={(e, newValue) => setSelectedPlayer(newValue)}
                         value={selectedPlayer}
+                        inputValue={selectedPlayer?.name ?? autocompleteInput}
+                        onKeyDown={(e) => {
+                            if (e.key == 'Backspace') {
+                                if (selectedPlayer) {
+                                    setSelectedPlayer(null)
+                                    setAutocompleteInput('')
+                                }
+                            }
+                        }}
+                        onInputCapture={(e) =>
+                            setAutocompleteInput(e.target.value)
+                        }
+                        open={autocompleteInput.length > 2 && !selectedPlayer}
                         getOptionLabel={(option) => option.name}
                         renderOption={(props, option) => (
                             <div
@@ -209,7 +255,7 @@ export default function GameTable() {
                         onClick={handleGuess}
                         disabled={submitGuess.isLoading}
                     >
-                        <span className="rubik-font-dropdown"> Guess</span>
+                        <span className="rubik-font-dropdown">Guess</span>
                     </Button>
                 </div>
             )}

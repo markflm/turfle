@@ -8,7 +8,18 @@ export type CategoryStatus =
     | 'miss' //team: miss = different conference
 
 export type Answer = {
-    value: string
+    value: string | TeamAnswer | PositionAnswer
     category: Categories
     status: CategoryStatus
+}
+
+export type TeamAnswer = {
+    teamName: string
+    conference: string
+    division: string
+}
+
+export type PositionAnswer = {
+    position: string
+    side: string
 }

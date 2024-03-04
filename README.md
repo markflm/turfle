@@ -16,6 +16,10 @@ more info: https://supabase.com/docs/guides/cli/local-development
 generate types from db - npx supabase gen types typescript --local > ./src/db/database.types.ts
 will need to re-run this to get full type support if db schema changes
 
+# to populate db from json (not included in repo)
+
+npx tsx ./src/utils/insert-data.ts
+
 # finally, run vite
 
 `npm run dev`

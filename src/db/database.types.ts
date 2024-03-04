@@ -41,6 +41,7 @@ export type Database = {
           id: number
           name: string
           position: number | null
+          sleeper_search_rank: number | null
           team: number | null
         }
         Insert: {
@@ -49,6 +50,7 @@ export type Database = {
           id?: number
           name: string
           position?: number | null
+          sleeper_search_rank?: number | null
           team?: number | null
         }
         Update: {
@@ -57,6 +59,7 @@ export type Database = {
           id?: number
           name?: string
           position?: number | null
+          sleeper_search_rank?: number | null
           team?: number | null
         }
         Relationships: [
@@ -130,30 +133,39 @@ export type Database = {
         Row: {
           age: string
           age_answer: string | null
+          conference: string
+          division: string
           name: string
           player_id: number
           position_answer: string | null
           position_name: string
+          position_side: string
           team_answer: string | null
           team_name: string
         }
         Insert: {
           age: string
           age_answer?: string | null
+          conference: string
+          division: string
           name: string
           player_id: number
           position_answer?: string | null
           position_name: string
+          position_side: string
           team_answer?: string | null
           team_name: string
         }
         Update: {
           age?: string
           age_answer?: string | null
+          conference?: string
+          division?: string
           name?: string
           player_id?: number
           position_answer?: string | null
           position_name?: string
+          position_side?: string
           team_answer?: string | null
           team_name?: string
         }
@@ -161,6 +173,7 @@ export type Database = {
       }
       teams: {
         Row: {
+          abbrv: string
           conference: string
           created_at: string
           division: string
@@ -169,6 +182,7 @@ export type Database = {
           name: string
         }
         Insert: {
+          abbrv: string
           conference: string
           created_at?: string
           division: string
@@ -177,6 +191,7 @@ export type Database = {
           name: string
         }
         Update: {
+          abbrv?: string
           conference?: string
           created_at?: string
           division?: string
@@ -198,10 +213,13 @@ export type Database = {
         Returns: {
           age: string
           age_answer: string | null
+          conference: string
+          division: string
           name: string
           player_id: number
           position_answer: string | null
           position_name: string
+          position_side: string
           team_answer: string | null
           team_name: string
         }[]
@@ -211,10 +229,13 @@ export type Database = {
         Returns: {
           age: string
           age_answer: string | null
+          conference: string
+          division: string
           name: string
           player_id: number
           position_answer: string | null
           position_name: string
+          position_side: string
           team_answer: string | null
           team_name: string
         }[]

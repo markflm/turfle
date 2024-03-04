@@ -1,24 +1,27 @@
-import { Box } from '@mui/material'
-import { Answer, Categories } from './types/Answer'
+import { Box, Tooltip } from '@mui/material'
+import { Answer, Categories, PositionAnswer, TeamAnswer } from './types/Answer'
 import { PlayerOption } from './types/PlayerOption'
 import { useEffect, useMemo, useState } from 'react'
 import { standardDelayMs } from './utils/global'
-
-export type GuessResultTableRowProps = {
-    row: GuessRow
-}
+import TeamSameConferenceTooltip from './tooltips/TeamSameConference'
+import AgeTooltip from './tooltips/Age'
+import PositionTooltip from './tooltips/Position'
 
 export type GuessRow = {
     guessedPlayer: PlayerOption
     guessAnswers: Answer[]
 }
 
+export type GuessResultTableRowProps = {
+    row: GuessRow
+    isLastRow: boolean
+}
+
 export default function GuessResultTableRow(props: GuessResultTableRowProps) {
     const [rowStatuses, setRowStatuses] = useState<
         { cat: Categories; color: string }[]
     >([])
-    const { row } = props
-
+    const { row, isLastRow } = props
     useMemo(() => {
         const rowStats: { cat: Categories; color: string }[] = []
         row.guessAnswers.map((ga) => {
@@ -30,7 +33,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                 case 'over':
                 case 'under':
                 case 'close':
-                    color = 'bg-amber-400'
+                    color = 'bg-yellow-500'
                     break
                 case 'very close':
                     color = 'bg-lime-500'
@@ -73,61 +76,129 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
     const positionAnswer = row.guessAnswers.find(
         (x) => x.category == 'position'
     )
-
+    if (!teamAnswer || !ageAnswer || !positionAnswer) {
+        console.error(
+            "One of the guess answer types wasn't present in guessAnswers array"
+        )
+        return <></>
+    }
     return (
-        <div className="flex text-white border-b ">
+        <div
+            className={`flex text-white border-slate-900 ${
+                !isLastRow ? 'border-b-2' : ''
+            }`}
+        >
             <div
                 id={`guessname_${row.guessedPlayer.playerId}`}
-                className="w-1/3 border-r p-2 invisible"
+                className="w-4/12 border-r-2  border-slate-900 p-2 invisible"
             >
                 <Box
                     sx={{
                         '& > img': { mr: 2, flexShrink: 0 },
                         display: 'flex',
                     }}
-                    {...props}
                 >
                     <img
                         loading="eager"
                         width="32"
                         src={`${window.location.href}/logos/${row.guessedPlayer.logoUrl}`}
                     />
-                    | {row.guessedPlayer.name} | {row.guessedPlayer.position}
+                    <div className="my-auto">
+                        | {row.guessedPlayer.name} |{' '}
+                        {row.guessedPlayer.position}{' '}
+                    </div>
                 </Box>
             </div>
-            <div
-                id={`guessteam_${row.guessedPlayer.playerId}`}
-                className={`w-1/3 border-r flex p-2 invisible ${
-                    rowStatuses.find((x) => x.cat == 'team')?.color
-                } `}
+            <Tooltip
+                title={
+                    <TeamSameConferenceTooltip
+                        conferenceName={
+                            (teamAnswer.value as TeamAnswer).conference
+                        }
+                        divisionName={(teamAnswer.value as TeamAnswer).division}
+                        status={teamAnswer.status}
+                    ></TeamSameConferenceTooltip>
+                }
             >
-                <div className="mx-auto">{teamAnswer?.value}</div>
-            </div>
-            <div
-                id={`guessage_${row.guessedPlayer.playerId}`}
-                className={`w-1/6 border-r flex p-2 invisible  ${
-                    rowStatuses.find((x) => x.cat == 'age')?.color
-                } `}
-            >
-                <div className="mx-auto flex gap-1">
-                    {ageAnswer?.value}
-                    {ageAnswer?.status === 'correct' ? (
-                        <></>
-                    ) : ageAnswer?.status === 'over' ? (
-                        <div>V</div>
-                    ) : (
-                        <div>^</div>
-                    )}
+                <div
+                    id={`guessteam_${row.guessedPlayer.playerId}`}
+                    className={`w-4/12 border-r-2 border-slate-900 flex p-2 invisible rounded-md cursor-pointer ${
+                        rowStatuses.find((x) => x.cat == 'team')?.color
+                    } `}
+                >
+                    <div className="m-auto">
+                        {(teamAnswer.value as TeamAnswer).teamName}
+                    </div>
                 </div>
-            </div>
-            <div
-                id={`guessposition_${row.guessedPlayer.playerId}`}
-                className={`w-1/6 border-r flex p-2 invisible ${
-                    rowStatuses.find((x) => x.cat == 'position')?.color
-                } `}
+            </Tooltip>
+            <Tooltip
+                title={<AgeTooltip status={ageAnswer.status}></AgeTooltip>}
             >
-                <div className="mx-auto">{positionAnswer?.value}</div>
-            </div>
+                <div
+                    id={`guessage_${row.guessedPlayer.playerId}`}
+                    className={`w-2/12 border-r-2 border-slate-900  flex p-2 invisible rounded-md cursor-pointer  ${
+                        rowStatuses.find((x) => x.cat == 'age')?.color
+                    } `}
+                >
+                    <div className="m-auto flex">
+                        {ageAnswer.value}
+                        {ageAnswer?.status === 'correct' ? (
+                            <></>
+                        ) : ageAnswer?.status === 'over' ? (
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={3}
+                                stroke="currentColor"
+                                className="w-4 h-4 mb-auto"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M15.75 17.25 12 21m0 0-3.75-3.75M12 21V3"
+                                />
+                            </svg>
+                        ) : (
+                            <div>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={3}
+                                    stroke="currentColor"
+                                    className="w-4 h-4 mb-auto"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M8.25 6.75 12 3m0 0 3.75 3.75M12 3v18"
+                                    />
+                                </svg>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </Tooltip>
+            <Tooltip
+                title={
+                    <PositionTooltip
+                        status={positionAnswer.status}
+                        side={(positionAnswer.value as PositionAnswer).side}
+                    ></PositionTooltip>
+                }
+            >
+                <div
+                    id={`guessposition_${row.guessedPlayer.playerId}`}
+                    className={`w-2/12 border-r-2 border-slate-900 rounded-md flex p-2 invisible cursor-pointer ${
+                        rowStatuses.find((x) => x.cat == 'position')?.color
+                    } `}
+                >
+                    <div className="m-auto">
+                        {(positionAnswer.value as PositionAnswer).position}
+                    </div>
+                </div>
+            </Tooltip>
         </div>
     )
 }
