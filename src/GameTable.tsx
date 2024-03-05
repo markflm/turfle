@@ -60,7 +60,6 @@ export default function GameTable() {
                 ) {
                     setGuessedCorrectly(true)
                     endGameWithAnimationDelay()
-                    console.log('set guessed correctly true')
                 }
             }
         }
@@ -85,7 +84,6 @@ export default function GameTable() {
             setAutocompleteInput('')
             const existingGuesses = [...guessResults]
             const guessResult = submitGuess.data
-            console.log(guessResult)
             if (!selectedPlayer || !guessResult) return
             existingGuesses.push({
                 guessedPlayer: selectedPlayer,
@@ -154,14 +152,15 @@ export default function GameTable() {
     return (
         <div className="flex h-full rubik-font-dropdown">
             {!getAllPlayersLoading && (
-                <div className="m-auto flex flex-col">
-                    <div className="italic text-white text-6xl underline mx-auto">
+                <div className="m-auto flex gap-4 flex-col">
+                    <div className="italic text-white text-8xl mx-auto bebas-neue-title">
                         TURFLE
                     </div>
                     <GuessResultTable guesses={guessResults}></GuessResultTable>
                     <div className="flex mb-4 gap-5 mx-auto">
                         {[...Array(guessLimit)].map((_e, i) => (
                             <div
+                                key={`guess_counter_${i + 1}`}
                                 className={`w-5 h-2 ${
                                     guessResults.length < i + 1
                                         ? 'opacity-30'
@@ -171,7 +170,7 @@ export default function GameTable() {
                         ))}
                     </div>
                     <Autocomplete
-                        sx={{ width: 300, marginX: 'auto' }}
+                        sx={{ minWidth: 350, marginX: 'auto' }}
                         options={playerValues ?? []}
                         onChange={(_e, newValue) => setSelectedPlayer(newValue)}
                         value={selectedPlayer}
@@ -218,7 +217,7 @@ export default function GameTable() {
                                     borderRadius: 2,
                                 }}
                                 {...params}
-                                placeholder="Select a Player"
+                                placeholder="Start typing a Player to start"
                                 inputProps={{
                                     ...params.inputProps,
                                     style: inputStyle,
@@ -226,6 +225,7 @@ export default function GameTable() {
                             />
                         )}
                     />
+
                     <Button
                         sx={{
                             marginX: 'auto',
@@ -234,10 +234,13 @@ export default function GameTable() {
                             minWidth: '10rem',
                         }}
                         variant="contained"
+                        color="primary"
                         onClick={handleGuess}
                         disabled={submitGuess.isLoading || isGameOver}
                     >
-                        <span className="rubik-font-dropdown">Guess</span>
+                        <span className="bebas-neue-regular text-2xl">
+                            Guess
+                        </span>
                     </Button>
                 </div>
             )}
