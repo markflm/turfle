@@ -9,7 +9,7 @@ import { CategoryStatus } from './types/Answer'
 import { additionalGameOverDelayMs, standardDelayMs } from './utils/global'
 import EndGamePopUp from './EndGamePopup'
 
-const guessLimit = 2
+const guessLimit = 5
 
 export default function GameTable() {
     const [selectedPlayer, setSelectedPlayer] = useState<PlayerOption | null>(
@@ -21,7 +21,6 @@ export default function GameTable() {
     const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(false)
     const [autocompleteInput, setAutocompleteInput] = useState<string>('')
 
-    console.log('is game over ' + isGameOver)
     const { data: playerValues, isLoading: getAllPlayersLoading } = useQuery(
         ['all_players'],
         async () => {
@@ -52,10 +51,20 @@ export default function GameTable() {
             const existingGuesses = localStorage.getItem('turfle-guesses')
             if (existingGuesses) {
                 //todo - maybe check that existingGuesses haven't been tampered with
+                const parsedGuesses: GuessRow[] = JSON.parse(existingGuesses)
                 setGuessResults(JSON.parse(existingGuesses))
+
+                if (
+                    parsedGuesses[parsedGuesses.length - 1].guessedPlayer
+                        .playerId == potd?.player_id
+                ) {
+                    setGuessedCorrectly(true)
+                    endGameWithAnimationDelay()
+                    console.log('set guessed correctly true')
+                }
             }
         }
-    }, [])
+    }, [getPotdLoading])
 
     useEffect(() => {
         if (guessResults.length) {
@@ -138,18 +147,17 @@ export default function GameTable() {
     function endGameWithAnimationDelay() {
         //wait for animations to play out plus a little extra time to process result, then show game over modal
         setIsGameOver(true)
-        setTimeout(
-            () => {
-                setShowGameOverModal(true)
-            },
-            standardDelayMs * 4 + additionalGameOverDelayMs
-            //500
-        )
+        setTimeout(() => {
+            setShowGameOverModal(true)
+        }, standardDelayMs * 4 + additionalGameOverDelayMs)
     }
     return (
         <div className="flex h-full rubik-font-dropdown">
             {!getAllPlayersLoading && (
                 <div className="m-auto flex flex-col">
+                    <div className="italic text-white text-6xl underline mx-auto">
+                        TURFLE
+                    </div>
                     <GuessResultTable guesses={guessResults}></GuessResultTable>
                     <div className="flex mb-4 gap-5 mx-auto">
                         {[...Array(guessLimit)].map((e, i) => (
