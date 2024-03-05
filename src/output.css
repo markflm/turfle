@@ -659,8 +659,16 @@ video {
   gap: 1.75rem;
 }
 
+.gap-2 {
+  gap: 0.5rem;
+}
+
 .rounded-md {
   border-radius: 0.375rem;
+}
+
+.border {
+  border-width: 1px;
 }
 
 .border-b {
@@ -714,6 +722,21 @@ video {
   background-color: rgb(234 179 8 / var(--tw-bg-opacity));
 }
 
+.bg-red-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 202 202 / var(--tw-bg-opacity));
+}
+
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
+}
+
+.bg-red-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(252 165 165 / var(--tw-bg-opacity));
+}
+
 .bg-gradient-to-t {
   background-image: linear-gradient(to top, var(--tw-gradient-stops));
 }
@@ -734,6 +757,10 @@ video {
 
 .p-2 {
   padding: 0.5rem;
+}
+
+.p-7 {
+  padding: 1.75rem;
 }
 
 .px-4 {
@@ -770,6 +797,11 @@ video {
   line-height: 1.75rem;
 }
 
+.text-8xl {
+  font-size: 6rem;
+  line-height: 1;
+}
+
 .font-bold {
   font-weight: 700;
 }
@@ -785,10 +817,6 @@ video {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-
-.underline {
-  text-decoration-line: underline;
 }
 
 .opacity-30 {
@@ -832,4 +860,18 @@ video {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.bebas-neue-regular {
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.1275rem;
+}
+
+.bebas-neue-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 900;
+  font-style: normal;
+  letter-spacing: 0.75rem;
 }

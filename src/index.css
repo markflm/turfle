@@ -39,3 +39,17 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.bebas-neue-regular {
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: 0.1275rem;
+}
+
+.bebas-neue-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    letter-spacing: 0.75rem;
+}
