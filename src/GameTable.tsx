@@ -160,7 +160,7 @@ export default function GameTable() {
                     </div>
                     <GuessResultTable guesses={guessResults}></GuessResultTable>
                     <div className="flex mb-4 gap-5 mx-auto">
-                        {[...Array(guessLimit)].map((e, i) => (
+                        {[...Array(guessLimit)].map((_e, i) => (
                             <div
                                 className={`w-5 h-2 ${
                                     guessResults.length < i + 1
@@ -173,7 +173,7 @@ export default function GameTable() {
                     <Autocomplete
                         sx={{ width: 300, marginX: 'auto' }}
                         options={playerValues ?? []}
-                        onChange={(e, newValue) => setSelectedPlayer(newValue)}
+                        onChange={(_e, newValue) => setSelectedPlayer(newValue)}
                         value={selectedPlayer}
                         inputValue={selectedPlayer?.name ?? autocompleteInput}
                         onKeyDown={(e) => {
@@ -185,6 +185,7 @@ export default function GameTable() {
                             }
                         }}
                         onInputCapture={(e) =>
+                            //@ts-expect-error
                             setAutocompleteInput(e.target.value)
                         }
                         open={autocompleteInput.length > 2 && !selectedPlayer}

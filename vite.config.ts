@@ -7,4 +7,13 @@ export default defineConfig({
     server: {
         hmr: {},
     },
+    build: {
+        manifest: true,
+        rollupOptions: {
+            external: [
+                'src/utils/insert-data.ts',
+                'src/utils/sleeperdata.json',
+            ],
+        },
+    },
 })

@@ -141,7 +141,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                     } `}
                 >
                     <div className="m-auto flex">
-                        {ageAnswer.value}
+                        <div>{ageAnswer.value as string}</div>
                         {ageAnswer?.status === 'correct' ? (
                             <></>
                         ) : ageAnswer?.status === 'over' ? (
