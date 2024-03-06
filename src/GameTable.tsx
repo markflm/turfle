@@ -8,6 +8,7 @@ import { GuessRow } from './GuessResultTableRow'
 import { CategoryStatus } from './types/Answer'
 import { additionalGameOverDelayMs, standardDelayMs } from './utils/global'
 import EndGamePopUp from './EndGamePopup'
+import HowToPlayPopup from './HowToPlayPopup'
 
 const guessLimit = 5
 
@@ -20,6 +21,7 @@ export default function GameTable() {
     const [showGameOverModal, setShowGameOverModal] = useState<boolean>(false)
     const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(false)
     const [autocompleteInput, setAutocompleteInput] = useState<string>('')
+    const [showHowToPlayModal, setShowHowToPlayModal] = useState<boolean>(false)
 
     const { data: playerValues, isLoading: getAllPlayersLoading } = useQuery(
         ['all_players'],
@@ -38,6 +40,12 @@ export default function GameTable() {
     )
 
     const submitGuess = useMutation(checkGuess)
+
+    useEffect(() => {
+        const acknowledgedHowToPlay = localStorage.getItem('turfle-how-to-play')
+
+        if (!acknowledgedHowToPlay) setShowHowToPlayModal(true)
+    }, [])
 
     useEffect(() => {
         const lastExistingGuess = localStorage.getItem('turfle-time')
@@ -73,7 +81,6 @@ export default function GameTable() {
         if (guessedCorrectly) return //if guess was correct, we've already started the end game process
         if (guessResults.length >= guessLimit) {
             //trigger game over sequence
-
             endGameWithAnimationDelay()
         }
         if (guessResults.length > guessLimit) return
@@ -135,11 +142,9 @@ export default function GameTable() {
         await submitGuess.mutateAsync(selectedPlayer.playerId)
     }
 
-    //used to pass style to MUI guess input inputProps
-    const inputStyle = {
-        fontFamily: "'Rubik', sans-serif",
-        fontWeight: 400,
-        fontStyle: 'normal',
+    function handleHowToPlayClose() {
+        localStorage.setItem('turfle-how-to-play', 'true')
+        setShowHowToPlayModal(false)
     }
 
     function endGameWithAnimationDelay() {
@@ -148,6 +153,12 @@ export default function GameTable() {
         setTimeout(() => {
             setShowGameOverModal(true)
         }, standardDelayMs * 4 + additionalGameOverDelayMs)
+    }
+    //used to pass style to MUI guess input inputProps
+    const inputStyle = {
+        fontFamily: "'Rubik', sans-serif",
+        fontWeight: 400,
+        fontStyle: 'normal',
     }
     return (
         <div className="flex h-full rubik-font-dropdown">
@@ -225,23 +236,54 @@ export default function GameTable() {
                             />
                         )}
                     />
-
-                    <Button
-                        sx={{
-                            marginX: 'auto',
-                            marginTop: 2,
-                            padding: 2,
-                            minWidth: '10rem',
-                        }}
-                        variant="contained"
-                        color="primary"
-                        onClick={handleGuess}
-                        disabled={submitGuess.isLoading || isGameOver}
-                    >
-                        <span className="bebas-neue-regular text-2xl">
-                            Guess
-                        </span>
-                    </Button>
+                    <div className="flex mx-auto relative">
+                        <Button
+                            sx={{
+                                marginTop: 2,
+                                padding: 2,
+                                minWidth: '10rem',
+                            }}
+                            variant="contained"
+                            color="primary"
+                            onClick={handleGuess}
+                            disabled={submitGuess.isLoading || isGameOver}
+                        >
+                            <span className="bebas-neue-regular text-2xl">
+                                Guess
+                            </span>
+                        </Button>
+                        <div className="absolute flex left-48 top-12 justify-between w-20 cursor-pointer">
+                            <svg
+                                onClick={() => setShowHowToPlayModal(true)}
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.75}
+                                stroke="white"
+                                className="w-8 h-8"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"
+                                />
+                            </svg>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.75}
+                                stroke="white"
+                                className="w-8 h-8"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+                                />
+                            </svg>
+                        </div>
+                    </div>
                 </div>
             )}
             <EndGamePopUp
@@ -252,6 +294,10 @@ export default function GameTable() {
                 correct={guessedCorrectly}
                 onClose={() => setShowGameOverModal(false)}
             ></EndGamePopUp>
+            <HowToPlayPopup
+                isOpen={showHowToPlayModal}
+                onClose={() => handleHowToPlayClose()}
+            ></HowToPlayPopup>
         </div>
     )
 }
