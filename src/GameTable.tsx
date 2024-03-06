@@ -9,6 +9,10 @@ import { CategoryStatus } from './types/Answer'
 import { additionalGameOverDelayMs, standardDelayMs } from './utils/global'
 import EndGamePopUp from './EndGamePopup'
 import HowToPlayPopup from './HowToPlayPopup'
+import {
+    getDateInEastern,
+    getTimeTilMidnightEastern,
+} from './utils/dateTimeProvider'
 
 const guessLimit = 5
 
