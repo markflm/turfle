@@ -39,7 +39,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                     color = 'bg-lime-500'
                     break
                 case 'miss':
-                    color = 'bg-red-600'
+                    color = 'guessrow-bg-incorrect'
                     break
             }
             rowStats.push({ cat: ga.category, color })
