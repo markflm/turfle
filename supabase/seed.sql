@@ -34,7 +34,7 @@ values ('Cincinatti Bengals', 'AFC', 'North', 'CIN', 'bengals.png'),
 
 insert into positions (side, name)
 values ('Offense', 'QB'), ('Offense', 'WR'), 
-('Offense', 'RB'), ('Offense', 'TE'), ('Offense', 'OL'), ('Offense', 'K'), ('Defense', 'S'), ('Defense', 'LB'), ('Defense', 'CB'), ('Defense', 'DL');
+('Offense', 'RB'), ('Offense', 'TE'), ('Offense', 'OL'), ('Offense', 'OT'), ('Offense', 'K'), ('Defense', 'S'), ('Defense', 'LB'), ('Defense', 'DB'), ('Defense', 'DE'), ('Defense', 'CB'), ('Defense', 'DL'), ('Defense', 'DT');
 
 
 -- insert into players (name, team, position, dob)
