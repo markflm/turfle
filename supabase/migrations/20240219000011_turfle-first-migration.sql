@@ -30,6 +30,7 @@ create table
     position bigint null,
     dob date not null,
     sleeper_search_rank bigint null,
+    sleeper_id bigint null,
     constraint players_pkey primary key (id),
     constraint players_team_fkey foreign key (team) references teams (id),
     constraint players_position_fkey foreign key ("position") references positions (id)

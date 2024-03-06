@@ -41,6 +41,7 @@ export type Database = {
           id: number
           name: string
           position: number | null
+          sleeper_id: number | null
           sleeper_search_rank: number | null
           team: number | null
         }
@@ -50,6 +51,7 @@ export type Database = {
           id?: number
           name: string
           position?: number | null
+          sleeper_id?: number | null
           sleeper_search_rank?: number | null
           team?: number | null
         }
@@ -59,6 +61,7 @@ export type Database = {
           id?: number
           name?: string
           position?: number | null
+          sleeper_id?: number | null
           sleeper_search_rank?: number | null
           team?: number | null
         }
