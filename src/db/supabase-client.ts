@@ -11,9 +11,10 @@ type dbPosition = Database['public']['Tables']['positions']['Row']
 
 export const supaClient = createClient<Database>(supabaseUrl, supabaseKey)
 
-export async function checkGuess(playerId: number) {
+export async function checkGuess(playerId: number, date: string) {
     const { data, error } = await supaClient.rpc('checkguess', {
         guess_id: playerId,
+        potd_date: date,
     })
     if (error) {
         console.error(error)
@@ -38,8 +39,10 @@ export async function getAllPlayers() {
     })
 }
 
-export async function getPotd() {
-    const { data, error } = await supaClient.rpc('getpotd')
+export async function getPotd(forDate: string) {
+    const { data, error } = await supaClient.rpc('getpotd', {
+        potd_date: forDate,
+    })
     if (error) {
         console.error(error)
     }

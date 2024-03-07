@@ -5,8 +5,9 @@ import timezone from 'dayjs/plugin/timezone'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-export function getDateInEastern() {
+export function getDateInEastern(addDays = 0) {
     const now = dayjs.tz(dayjs(), 'America/New_York')
+    if (addDays) return dayjs(now).add(addDays, 'day').format('YYYY-MM-DD')
     return dayjs(now).format('YYYY-MM-DD')
 }
 

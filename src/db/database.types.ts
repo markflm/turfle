@@ -212,6 +212,7 @@ export type Database = {
       checkguess: {
         Args: {
           guess_id: number
+          potd_date: string
         }
         Returns: {
           age: string
@@ -228,7 +229,9 @@ export type Database = {
         }[]
       }
       getpotd: {
-        Args: Record<PropertyKey, never>
+        Args: {
+          potd_date: string
+        }
         Returns: {
           age: string
           age_answer: string | null
