@@ -40,5 +40,8 @@ values ('Offense', 'QB'), ('Offense', 'WR'),
 -- insert into players (name, team, position, dob)
 -- values ('Joe Burrow', 1, 1, '1/1/1995'), ('Ja''Marr Chase', 1, 2, '1/1/1996'), ('Joe Mixon', 1, 3, '1/1/1993'), ('Tyler Linderbaum', 2, 5, '1/1/1994'), ('Amari Cooper', 4, 2, '1/1/1989');
 
--- insert into potd (date, player_id)
--- values ('2024-03-05', 90);
+-- insert into potd (player_id, date)
+-- values (148,'2024-03-07'),
+-- (606,'2024-03-08'),
+-- (794,'2024-03-09'),
+-- (591,'2024-03-10')

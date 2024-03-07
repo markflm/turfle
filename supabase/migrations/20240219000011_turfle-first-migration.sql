@@ -63,7 +63,7 @@ create table
   ) tablespace pg_default;
 
 
-create or replace function checkguess(guess_id int) returns SETOF response 
+create or replace function checkguess(guess_id int, potd_date text) returns SETOF response 
 as $$
 begin
 
@@ -115,10 +115,7 @@ where
       player_id
     from
       potd
-    order by
-      date desc
-    limit
-      1
+    where potd.date::text = potd_date
   );
 
 return query select

@@ -9,6 +9,10 @@ import { CategoryStatus } from './types/Answer'
 import { additionalGameOverDelayMs, standardDelayMs } from './utils/global'
 import EndGamePopUp from './EndGamePopup'
 import HowToPlayPopup from './HowToPlayPopup'
+import {
+    getDateInEastern,
+    getTimeTilMidnightEastern,
+} from './utils/dateTimeProvider'
 
 const guessLimit = 5
 
@@ -22,6 +26,7 @@ export default function GameTable() {
     const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(false)
     const [autocompleteInput, setAutocompleteInput] = useState<string>('')
     const [showHowToPlayModal, setShowHowToPlayModal] = useState<boolean>(false)
+    const [potdDate, setPotdDate] = useState<string>(getDateInEastern())
 
     const { data: playerValues, isLoading: getAllPlayersLoading } = useQuery(
         ['all_players'],
@@ -34,12 +39,14 @@ export default function GameTable() {
     const { data: potd, isLoading: getPotdLoading } = useQuery(
         ['potd'],
         async () => {
-            return await getPotd()
-        },
-        { staleTime: 1000 * 60 * 5 }
+            return await getPotd(potdDate)
+        }
     )
 
-    const submitGuess = useMutation(checkGuess)
+    const submitGuess = useMutation({
+        //@ts-expect-error
+        mutationFn: ({ playerId, date }) => checkGuess(playerId, date),
+    })
 
     useEffect(() => {
         const acknowledgedHowToPlay = localStorage.getItem('turfle-how-to-play')
@@ -48,6 +55,7 @@ export default function GameTable() {
     }, [])
 
     useEffect(() => {
+        if (getPotdLoading) return
         const lastExistingGuess = localStorage.getItem('turfle-time')
         //if you have guesses but they're older than midnight yesterday (EST), clear your localstorage
         if (lastExistingGuess) {
@@ -139,7 +147,11 @@ export default function GameTable() {
             console.error('already guessed this guy state')
             return
         }
-        await submitGuess.mutateAsync(selectedPlayer.playerId)
+        //@ts-expect-error -- ? some react-query type issue when passing multiple parameters to useMutation
+        await submitGuess.mutateAsync({
+            playerId: selectedPlayer.playerId,
+            date: potdDate,
+        })
     }
 
     function handleHowToPlayClose() {
