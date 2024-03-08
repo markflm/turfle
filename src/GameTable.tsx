@@ -3,7 +3,7 @@ import { checkGuess, getAllPlayers, getPotd } from './db/supabase-client'
 import { Autocomplete, Box, Button, TextField } from '@mui/material'
 import GuessResultTable from './GuessResultTable'
 import { PlayerOption } from './types/PlayerOption'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { GuessRow } from './GuessResultTableRow'
 import { CategoryStatus } from './types/Answer'
 import { additionalGameOverDelayMs, standardDelayMs } from './utils/global'
@@ -11,12 +11,13 @@ import EndGamePopUp from './EndGamePopup'
 import HowToPlayPopup from './HowToPlayPopup'
 import {
     getDateInEastern,
-    getTimeTilMidnightEastern,
+    getPrevDayCutoffUnix,
 } from './utils/dateTimeProvider'
 
 const guessLimit = 5
 
 export default function GameTable() {
+    const firstUpdate = useRef(true)
     const [selectedPlayer, setSelectedPlayer] = useState<PlayerOption | null>(
         null
     )
@@ -59,11 +60,14 @@ export default function GameTable() {
         const lastExistingGuess = localStorage.getItem('turfle-time')
         //if you have guesses but they're older than midnight yesterday (EST), clear your localstorage
         if (lastExistingGuess) {
-            const d = new Date()
-            d.setHours(0, 0, 0, 0)
-            if (parseInt(lastExistingGuess) < d.valueOf()) {
-                localStorage.clear()
+            const midnightYesterdayUnix = getPrevDayCutoffUnix()
+
+            if (parseInt(lastExistingGuess) < midnightYesterdayUnix) {
+                localStorage.removeItem('turfle-guesses')
+                localStorage.removeItem('turfle-time')
+                return
             }
+
             const existingGuesses = localStorage.getItem('turfle-guesses')
             if (existingGuesses) {
                 //todo - maybe check that existingGuesses haven't been tampered with
@@ -84,8 +88,14 @@ export default function GameTable() {
     useEffect(() => {
         if (guessResults.length) {
             localStorage.setItem('turfle-guesses', JSON.stringify(guessResults))
-            localStorage.setItem('turfle-time', Date.now().toString())
+            if (!firstUpdate.current) {
+                localStorage.setItem(
+                    'turfle-time',
+                    Math.floor(Date.now() / 1000).toString()
+                )
+            }
         }
+        firstUpdate.current = false //don't set turfle-time on initial run
         if (guessedCorrectly) return //if guess was correct, we've already started the end game process
         if (guessResults.length >= guessLimit) {
             //trigger game over sequence

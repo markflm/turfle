@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export type CountdownTimerProps = {
     unixTimeEnds: number
@@ -19,6 +19,7 @@ const finishedTimer = {
 const hourInSeconds = 3600
 export default function CountdownTimer(props: CountdownTimerProps) {
     const { unixTimeEnds } = props
+    const firstUpdate = useRef(true)
     const [remainingTime, setRemainingTime] =
         useState<CountdownTimer>(finishedTimer)
 
@@ -36,12 +37,16 @@ export default function CountdownTimer(props: CountdownTimerProps) {
             minutes,
             seconds,
         }
+        if (firstUpdate.current) {
+            setRemainingTime(newTimeObj)
+            firstUpdate.current = false
+        }
         const timer = setInterval(() => {
             setRemainingTime(newTimeObj)
         }, 1000)
 
         if (timeTil <= 0) {
-            setRemainingTime({ hours: 0, minutes: 0, seconds: 0 })
+            setRemainingTime(finishedTimer)
             clearInterval(timer)
         }
 

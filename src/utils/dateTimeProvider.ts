@@ -11,6 +11,11 @@ export function getDateInEastern(addDays = 0) {
     return dayjs(now).format('YYYY-MM-DD')
 }
 
+export function getPrevDayCutoffUnix() {
+    const now = dayjs.tz(getDateInEastern(), 'America/New_York')
+    return now.add(-1, 'day').unix()
+}
+
 export function getTimeTilMidnightEastern() {
     const today = getDateInEastern()
     return dayjs(today).add(1, 'day').unix()
