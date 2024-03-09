@@ -13,6 +13,7 @@ import {
     getDateInEastern,
     getPrevDayCutoffUnix,
 } from './utils/dateTimeProvider'
+import { imageSrcs } from './utils/imageList'
 
 const guessLimit = 5
 
@@ -50,13 +51,11 @@ export default function GameTable() {
     })
 
     useEffect(() => {
-        const acknowledgedHowToPlay = localStorage.getItem('turfle-how-to-play')
+        // for (let i = 0; i < imageSrcs.length; i++) {
+        //     const img = new Image()
+        //     img.src = `${window.location.href}/logos/${imageSrcs[i]}`
+        // }
 
-        if (!acknowledgedHowToPlay) setShowHowToPlayModal(true)
-    }, [])
-
-    useEffect(() => {
-        if (getPotdLoading) return
         const lastExistingGuess = localStorage.getItem('turfle-time')
         //if you have guesses but they're older than midnight yesterday (EST), clear your localstorage
         if (lastExistingGuess) {
@@ -67,20 +66,27 @@ export default function GameTable() {
                 localStorage.removeItem('turfle-time')
                 return
             }
+        }
 
-            const existingGuesses = localStorage.getItem('turfle-guesses')
-            if (existingGuesses) {
-                //todo - maybe check that existingGuesses haven't been tampered with
-                const parsedGuesses: GuessRow[] = JSON.parse(existingGuesses)
-                setGuessResults(JSON.parse(existingGuesses))
+        const acknowledgedHowToPlay = localStorage.getItem('turfle-how-to-play')
 
-                if (
-                    parsedGuesses[parsedGuesses.length - 1].guessedPlayer
-                        .playerId == potd?.player_id
-                ) {
-                    setGuessedCorrectly(true)
-                    endGameWithAnimationDelay()
-                }
+        if (!acknowledgedHowToPlay) setShowHowToPlayModal(true)
+    }, [])
+
+    useEffect(() => {
+        if (getPotdLoading) return
+        const existingGuesses = localStorage.getItem('turfle-guesses')
+        if (existingGuesses) {
+            //todo - maybe check that existingGuesses haven't been tampered with
+            const parsedGuesses: GuessRow[] = JSON.parse(existingGuesses)
+            setGuessResults(JSON.parse(existingGuesses))
+
+            if (
+                parsedGuesses[parsedGuesses.length - 1].guessedPlayer
+                    .playerId == potd?.player_id
+            ) {
+                setGuessedCorrectly(true)
+                endGameWithAnimationDelay()
             }
         }
     }, [getPotdLoading])
@@ -88,20 +94,18 @@ export default function GameTable() {
     useEffect(() => {
         if (guessResults.length) {
             localStorage.setItem('turfle-guesses', JSON.stringify(guessResults))
-            if (!firstUpdate.current) {
-                localStorage.setItem(
-                    'turfle-time',
-                    Math.floor(Date.now() / 1000).toString()
-                )
-            }
+
+            localStorage.setItem(
+                'turfle-time',
+                Math.floor(Date.now() / 1000).toString()
+            )
         }
-        firstUpdate.current = false //don't set turfle-time on initial run
+
         if (guessedCorrectly) return //if guess was correct, we've already started the end game process
         if (guessResults.length >= guessLimit) {
             //trigger game over sequence
             endGameWithAnimationDelay()
         }
-        if (guessResults.length > guessLimit) return
     }, [guessResults])
 
     useEffect(() => {
@@ -234,9 +238,8 @@ export default function GameTable() {
                                 >
                                     <img
                                         loading="eager"
-                                        width="32"
+                                        width="28"
                                         src={`${window.location.href}/logos/${option.logoUrl}`}
-                                        alt=""
                                     />
                                     | {option.name} | {option.position}
                                 </Box>
@@ -308,6 +311,13 @@ export default function GameTable() {
                     </div>
                 </div>
             )}
+            {/* last ditch effort to fix logo pop-in if file downsizing isn't enough - load all the images and hide them */}
+            {/* {imageSrcs.map((img) => (
+                <img
+                    className="hidden"
+                    src={`${window.location.href}/logos/${img}`}
+                ></img>
+            ))} */}
             <EndGamePopUp
                 guesses={guessResults.length}
                 guessLimit={guessLimit}
