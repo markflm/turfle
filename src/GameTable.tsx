@@ -42,7 +42,8 @@ export default function GameTable() {
         ['potd'],
         async () => {
             return await getPotd(potdDate)
-        }
+        },
+        { staleTime: Infinity }
     )
 
     const submitGuess = useMutation({
@@ -51,11 +52,6 @@ export default function GameTable() {
     })
 
     useEffect(() => {
-        // for (let i = 0; i < imageSrcs.length; i++) {
-        //     const img = new Image()
-        //     img.src = `${window.location.href}/logos/${imageSrcs[i]}`
-        // }
-
         const lastExistingGuess = localStorage.getItem('turfle-time')
         //if you have guesses but they're older than midnight yesterday (EST), clear your localstorage
         if (lastExistingGuess) {
