@@ -3,6 +3,7 @@ import { Database } from './database.types'
 import { PlayerOption } from '../types/PlayerOption'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_API_URL
+//const supabaseUrl = import.meta.env.VITE_SUPABASE_API_URL_NETWORK
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 type dbTeam = Database['public']['Tables']['teams']['Row']

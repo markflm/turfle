@@ -26,7 +26,8 @@ export default function EndGamePopUp(props: EndGamePopupProps) {
 
     const guessResults = useContext(GuessContext)
 
-    function copyResultsToClipboard() {
+    function copyResultsToClipboard(e) {
+        // console.log(e)
         navigator.clipboard.writeText(
             `Turfle ${getDateInEastern(0, 'MM/DD/YY')}\n${createEmojiTable(
                 guessResults
@@ -37,8 +38,8 @@ export default function EndGamePopUp(props: EndGamePopupProps) {
     return (
         <Modal open={isOpen} onClose={onClose}>
             <Fade in={isOpen}>
-                <div className="center-modal mobile:w-full outline-none  flex ">
-                    <div className="mx-auto flex flex-col min-h-96 bg-white items-center p-7 rounded-md gap-7 mobile:w-10/12">
+                <div className="center-modal mobile:w-full outline-none flex ">
+                    <div className="mx-auto flex flex-col min-h-96 bg-white items-center p-7 text-xl rounded-md gap-7 tablet:min-w-[22rem] mobile:w-10/12">
                         <div className="text-2xl italic">
                             {gameOverAdlibs[0]}
                         </div>
@@ -74,7 +75,7 @@ export default function EndGamePopUp(props: EndGamePopupProps) {
                         </div>
                         <Button
                             variant="outlined"
-                            onClick={copyResultsToClipboard}
+                            onPointerDown={(e) => copyResultsToClipboard(e)}
                         >
                             Copy to clipboard
                         </Button>

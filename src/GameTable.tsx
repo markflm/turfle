@@ -186,7 +186,7 @@ export default function GameTable() {
     return (
         <div className="flex h-full w-full rubik-font-dropdown">
             {!getAllPlayersLoading && (
-                <div className="m-auto flex gap-4 flex-col mobile:w-full">
+                <div className="m-auto flex gap-4 flex-col mobile:w-full mobile:my-20">
                     <div className="italic text-white  mx-auto bebas-neue-title text-8xl">
                         TURFLE
                     </div>

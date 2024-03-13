@@ -9,7 +9,7 @@ function App() {
     return (
         <QueryClientProvider client={queryClient}>
             <ThemeProvider theme={theme}>
-                <div className="bg-gradient-to-t from-slate-900 to-slate-700 from-10% w-screen h-screen">
+                <div className="w-screen tablet:h-screen mobile:min-h-screen">
                     <GameTable />
                 </div>
             </ThemeProvider>
