@@ -100,5 +100,5 @@ body {
 }
 
 .howto-color-card-container > * {
-    @apply p-2 rounded-lg;
+    @apply mobile:p-1 tablet:p-2 rounded-lg;
 }

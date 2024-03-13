@@ -26,13 +26,32 @@ export default function EndGamePopUp(props: EndGamePopupProps) {
 
     const guessResults = useContext(GuessContext)
 
-    function copyResultsToClipboard(e) {
-        // console.log(e)
+    //could usememo or context this but whatever
+    const isiOSMobile = navigator.userAgent.includes('iPhone')
+
+    function copyResultsToClipboard() {
         navigator.clipboard.writeText(
             `Turfle ${getDateInEastern(0, 'MM/DD/YY')}\n${createEmojiTable(
                 guessResults
             )}`
         )
+    }
+    async function copyResultsToClipboardiOS() {
+        const shareData: ShareData = {
+            title: `Turfle ${getDateInEastern(0, 'MM/DD/YY')}`,
+            text: `Turfle ${getDateInEastern(
+                0,
+                'MM/DD/YY'
+            )}\n${createEmojiTable(guessResults)}`,
+            // url: window.location.href,
+        }
+        if (navigator.canShare(shareData)) {
+            await navigator
+                .share(shareData)
+                .catch((error) => console.error('Error sharing', error))
+        } else {
+            alert("Native sharing isn't supported in your browser")
+        }
     }
 
     return (
@@ -73,12 +92,21 @@ export default function EndGamePopUp(props: EndGamePopupProps) {
                             </div>
                             <EmojiResultTable></EmojiResultTable>
                         </div>
-                        <Button
-                            variant="outlined"
-                            onPointerDown={(e) => copyResultsToClipboard(e)}
-                        >
-                            Copy to clipboard
-                        </Button>
+                        {isiOSMobile ? (
+                            <Button
+                                variant="outlined"
+                                onClick={copyResultsToClipboardiOS}
+                            >
+                                Share Results
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="outlined"
+                                onClick={copyResultsToClipboard}
+                            >
+                                Copy to clipboard
+                            </Button>
+                        )}
                     </div>
                 </div>
             </Fade>

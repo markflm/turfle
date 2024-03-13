@@ -89,7 +89,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
     const playerDiv = (
         <div
             id={`guessname_${row.guessedPlayer.playerId}`}
-            className=" border-slate-900 py-2 invisible  mobile:mx-auto  mobile:min-h-14 mobile:flex tablet:w-5/12 tablet:border-r-2 tablet:px-2 "
+            className=" border-slate-900 py-2 invisible  mobile:mx-auto  mobile:h-16 mobile:flex tablet:w-5/12 tablet:border-r-2 tablet:px-2 "
         >
             <Box
                 sx={{

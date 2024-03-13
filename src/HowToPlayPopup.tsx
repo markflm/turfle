@@ -12,17 +12,19 @@ export default function HowToPlayPopup(props: HowToPlayPopupProps) {
         if (reason == 'backdropClick') return
         onClose()
     }
+    //could usememo or context this but whatever
+    const isiOSMobile = navigator.userAgent.includes('iPhone')
     return (
         <Modal open={isOpen} onClose={(_event, reason) => checkOnClose(reason)}>
             <Fade in={isOpen}>
-                <div className="center-modal rubik-font-howto outline-none tablet:min-w-[500px]">
+                <div className="center-modal rubik-font-howto outline-none overflow-x-hidden mobile:max-w-[90%] tablet:min-w-[500px] mobile:max-h-[85%]  ">
                     <div
                         onClick={onClose}
                         className="text-2xl cursor-pointer absolute right-4 top-2"
                     >
                         X
                     </div>
-                    <div className="flex flex-col bg-white items-center p-7 rounded-md gap-3 text-lg text-left">
+                    <div className="flex flex-col bg-white items-center px-10 py-7 rounded-md gap-3 text-lg text-left mobile:overflow-y-scroll overflow-x-hidden">
                         <div className="text-2xl mx-auto">How To Play</div>
                         <div className="text-7xl mx-auto bebas-neue-title">
                             TURFLE
@@ -47,16 +49,18 @@ export default function HowToPlayPopup(props: HowToPlayPopupProps) {
                             <div className="guessrow-bg-correct">CORRECT</div>
                         </div>
                         <div>
-                            Mousing over (Desktop) or tapping (Mobile) on a
-                            category for one of your guesses can provide
+                            Mousing over (Desktop) or tap & holding (Mobile) on
+                            a category for one of your guesses can provide
                             additional information.
                         </div>
-                        <video autoPlay muted loop>
-                            <source
-                                src="/videos/turfle-example.webm"
-                                type="video/webm"
-                            />
-                        </video>
+                        {!isiOSMobile /* iOS doesn't support webm*/ && (
+                            <video autoPlay muted loop>
+                                <source
+                                    src="/videos/turfle-example.webm"
+                                    type="video/webm"
+                                />
+                            </video>
+                        )}
                     </div>
                 </div>
             </Fade>

@@ -184,9 +184,9 @@ export default function GameTable() {
         fontStyle: 'normal',
     }
     return (
-        <div className="flex h-full w-full rubik-font-dropdown">
+        <div className="flex h-screen w-full rubik-font-dropdown">
             {!getAllPlayersLoading && (
-                <div className="m-auto flex gap-4 flex-col mobile:w-full mobile:my-20">
+                <div className="m-auto flex gap-4 flex-col mobile:w-full">
                     <div className="italic text-white  mx-auto bebas-neue-title text-8xl">
                         TURFLE
                     </div>
@@ -262,7 +262,7 @@ export default function GameTable() {
                             />
                         )}
                     />
-                    <div className="flex mx-auto relative">
+                    <div className="flex mx-auto relative mobile:mb-10">
                         <Button
                             sx={{
                                 marginTop: 2,
