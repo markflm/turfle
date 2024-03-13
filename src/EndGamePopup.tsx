@@ -37,13 +37,13 @@ export default function EndGamePopUp(props: EndGamePopupProps) {
     return (
         <Modal open={isOpen} onClose={onClose}>
             <Fade in={isOpen}>
-                <div className="center-modal">
-                    <div className="flex flex-col min-h-96 bg-white items-center p-7 rounded-md gap-7">
+                <div className="center-modal mobile:w-full outline-none  flex ">
+                    <div className="mx-auto flex flex-col min-h-96 bg-white items-center p-7 rounded-md gap-7 mobile:w-10/12">
                         <div className="text-2xl italic">
                             {gameOverAdlibs[0]}
                         </div>
                         {correct ? (
-                            <div className="text-xl mx-auto">
+                            <div className="text-xl mx-auto text-center">
                                 You correctly guessed <b>{potdName}</b> in{' '}
                                 {guesses + guessLimit / 2 < guessLimit
                                     ? 'just '

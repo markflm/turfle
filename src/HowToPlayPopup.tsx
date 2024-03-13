@@ -15,19 +15,19 @@ export default function HowToPlayPopup(props: HowToPlayPopupProps) {
     return (
         <Modal open={isOpen} onClose={(_event, reason) => checkOnClose(reason)}>
             <Fade in={isOpen}>
-                <div className="center-modal rubik-font-howto outline-none min-w-[500px]">
+                <div className="center-modal rubik-font-howto outline-none tablet:min-w-[500px]">
                     <div
                         onClick={onClose}
                         className="text-2xl cursor-pointer absolute right-4 top-2"
                     >
                         X
                     </div>
-                    <div className="flex flex-col bg-white items-center p-7 rounded-md gap-3 text-lg">
+                    <div className="flex flex-col bg-white items-center p-7 rounded-md gap-3 text-lg text-left">
                         <div className="text-2xl mx-auto">How To Play</div>
                         <div className="text-7xl mx-auto bebas-neue-title">
                             TURFLE
                         </div>
-                        <div>
+                        <div class="mr-auto">
                             Each day you'll have FIVE chances to guess the
                             (mostly) randomly selected NFL Player of the Day
                             (POTD).
