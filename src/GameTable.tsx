@@ -90,11 +90,6 @@ export default function GameTable() {
     useEffect(() => {
         if (guessResults.length) {
             localStorage.setItem('turfle-guesses', JSON.stringify(guessResults))
-
-            localStorage.setItem(
-                'turfle-time',
-                Math.floor(Date.now() / 1000).toString()
-            )
         }
 
         if (guessedCorrectly) return //if guess was correct, we've already started the end game process
@@ -157,6 +152,11 @@ export default function GameTable() {
             console.error('already guessed this guy state')
             return
         }
+
+        localStorage.setItem(
+            'turfle-time',
+            Math.floor(Date.now() / 1000).toString()
+        )
         //@ts-expect-error -- ? some react-query type issue when passing multiple parameters to useMutation
         await submitGuess.mutateAsync({
             playerId: selectedPlayer.playerId,
