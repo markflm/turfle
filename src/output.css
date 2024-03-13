@@ -607,16 +607,16 @@ video {
   margin-bottom: auto;
 }
 
-.mt-auto {
-  margin-top: auto;
-}
-
 .mr-1 {
   margin-right: 0.25rem;
 }
 
 .mt-2 {
   margin-top: 0.5rem;
+}
+
+.mt-auto {
+  margin-top: auto;
 }
 
 .flex {
@@ -639,10 +639,6 @@ video {
   height: 2rem;
 }
 
-.h-96 {
-  height: 24rem;
-}
-
 .h-full {
   height: 100%;
 }
@@ -651,8 +647,37 @@ video {
   height: 100vh;
 }
 
+.h-96 {
+  height: 24rem;
+}
+
+.h-52 {
+  height: 13rem;
+}
+
+.h-min {
+  height: -moz-min-content;
+  height: min-content;
+}
+
+.h-20 {
+  height: 5rem;
+}
+
+.h-24 {
+  height: 6rem;
+}
+
 .min-h-96 {
   min-height: 24rem;
+}
+
+.min-h-20 {
+  min-height: 5rem;
+}
+
+.min-h-24 {
+  min-height: 6rem;
 }
 
 .w-2\/12 {
@@ -683,12 +708,20 @@ video {
   width: 100vw;
 }
 
+.w-full {
+  width: 100%;
+}
+
 .min-w-\[500px\] {
   min-width: 500px;
 }
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.resize-none {
+  resize: none;
 }
 
 .flex-col {
@@ -701,6 +734,10 @@ video {
 
 .justify-between {
   justify-content: space-between;
+}
+
+.gap-2 {
+  gap: 0.5rem;
 }
 
 .gap-3 {
@@ -719,8 +756,16 @@ video {
   gap: 1.75rem;
 }
 
-.gap-2 {
-  gap: 0.5rem;
+.overflow-auto {
+  overflow: auto;
+}
+
+.overflow-visible {
+  overflow: visible;
+}
+
+.overflow-y-visible {
+  overflow-y: visible;
 }
 
 .rounded-md {
@@ -753,11 +798,6 @@ video {
   background-color: rgb(22 163 74 / var(--tw-bg-opacity));
 }
 
-.bg-lime-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(132 204 22 / var(--tw-bg-opacity));
-}
-
 .bg-slate-800 {
   --tw-bg-opacity: 1;
   background-color: rgb(30 41 59 / var(--tw-bg-opacity));
@@ -766,11 +806,6 @@ video {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-.bg-yellow-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(234 179 8 / var(--tw-bg-opacity));
 }
 
 .bg-gradient-to-t {
@@ -813,6 +848,11 @@ video {
   line-height: 2.25rem;
 }
 
+.text-5xl {
+  font-size: 3rem;
+  line-height: 1;
+}
+
 .text-7xl {
   font-size: 4.5rem;
   line-height: 1;
@@ -831,11 +871,6 @@ video {
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
-}
-
-.text-5xl {
-  font-size: 3rem;
-  line-height: 1;
 }
 
 .font-bold {
@@ -935,13 +970,12 @@ video {
 }
 
 .guessrow-bg-miss {
-  --tw-bg-opacity: 1;
-  background-color: rgb(234 179 8 / var(--tw-bg-opacity));
+  background-color: #ffa500;
 }
 
 .guessrow-bg-nearmiss {
   --tw-bg-opacity: 1;
-  background-color: rgb(132 204 22 / var(--tw-bg-opacity));
+  background-color: rgb(250 204 21 / var(--tw-bg-opacity));
 }
 
 .guessrow-bg-correct {

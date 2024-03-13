@@ -66,11 +66,11 @@
 }
 
 .guessrow-bg-miss {
-    @apply bg-yellow-500;
+    background-color: #ffa500;
 }
 
 .guessrow-bg-nearmiss {
-    @apply bg-lime-500;
+    @apply bg-yellow-400;
 }
 .guessrow-bg-correct {
     @apply bg-green-600;

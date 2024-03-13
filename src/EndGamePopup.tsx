@@ -1,7 +1,14 @@
 import { Button, Fade, Modal } from '@mui/material'
-import EmojiResultTable from './components/EmojiResultTable'
+import EmojiResultTable, {
+    createEmojiTable,
+} from './components/EmojiResultTable'
 import CountdownTimer from './components/CountdownTimer'
-import { getTimeTilMidnightEastern } from './utils/dateTimeProvider'
+import {
+    getDateInEastern,
+    getTimeTilMidnightEastern,
+} from './utils/dateTimeProvider'
+import { useContext } from 'react'
+import { GuessContext } from './contexts/GuessContext'
 
 export type EndGamePopupProps = {
     guesses: number
@@ -16,6 +23,17 @@ const gameOverAdlibs = ["That's game!", "That'll do it!"]
 
 export default function EndGamePopUp(props: EndGamePopupProps) {
     const { guesses, correct, isOpen, potdName, guessLimit, onClose } = props
+
+    const guessResults = useContext(GuessContext)
+
+    function copyResultsToClipboard() {
+        navigator.clipboard.writeText(
+            `Turfle ${getDateInEastern(0, 'MM/DD/YY')}\n${createEmojiTable(
+                guessResults
+            )}`
+        )
+    }
+
     return (
         <Modal open={isOpen} onClose={onClose}>
             <Fade in={isOpen}>
@@ -54,7 +72,12 @@ export default function EndGamePopUp(props: EndGamePopupProps) {
                             </div>
                             <EmojiResultTable></EmojiResultTable>
                         </div>
-                        <Button variant="outlined">Copy to clipboard</Button>
+                        <Button
+                            variant="outlined"
+                            onClick={copyResultsToClipboard}
+                        >
+                            Copy to clipboard
+                        </Button>
                     </div>
                 </div>
             </Fade>

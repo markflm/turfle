@@ -33,10 +33,10 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                 case 'over':
                 case 'under':
                 case 'close':
-                    color = 'bg-yellow-500'
+                    color = 'guessrow-bg-miss'
                     break
                 case 'very close':
-                    color = 'bg-lime-500'
+                    color = 'guessrow-bg-nearmiss'
                     break
                 case 'miss':
                     color = 'guessrow-bg-incorrect'

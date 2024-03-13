@@ -5,10 +5,10 @@ import timezone from 'dayjs/plugin/timezone'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-export function getDateInEastern(addDays = 0) {
+export function getDateInEastern(addDays = 0, format?: string) {
     const now = dayjs.tz(dayjs(), 'America/New_York')
     if (addDays) return dayjs(now).add(addDays, 'day').format('YYYY-MM-DD')
-    return dayjs(now).format('YYYY-MM-DD')
+    return dayjs(now).format(format ?? 'YYYY-MM-DD')
 }
 
 export function getPrevDayCutoffUnix() {
