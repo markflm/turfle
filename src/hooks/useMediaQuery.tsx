@@ -1,8 +1,8 @@
 import React from 'react'
 
-export function useCustomMediaQuery(query) {
+export function useCustomMediaQuery(query: string) {
     const subscribe = React.useCallback(
-        (callback) => {
+        (callback: () => void) => {
             const matchMedia = window.matchMedia(query)
 
             matchMedia.addEventListener('change', callback)

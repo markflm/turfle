@@ -27,7 +27,7 @@ export default function HowToPlayPopup(props: HowToPlayPopupProps) {
                         <div className="text-7xl mx-auto bebas-neue-title">
                             TURFLE
                         </div>
-                        <div class="mr-auto">
+                        <div className="mr-auto">
                             Each day you'll have FIVE chances to guess the
                             (mostly) randomly selected NFL Player of the Day
                             (POTD).
