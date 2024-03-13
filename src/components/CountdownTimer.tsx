@@ -58,8 +58,8 @@ export default function CountdownTimer(props: CountdownTimerProps) {
     return (
         <div className="flex flex-col">
             <div className="flex text-5xl bebas-neue-regular mx-auto gap-2">
-                <div>{remainingTime.hours.toString().padStart(2, '0')} :</div>
-                <div>{remainingTime.minutes.toString().padStart(2, '0')} :</div>
+                <div>{remainingTime.hours.toString().padStart(2, '0')}:</div>
+                <div>{remainingTime.minutes.toString().padStart(2, '0')}:</div>
                 <div>{remainingTime.seconds.toString().padStart(2, '0')}</div>
             </div>
             {remainingTime.hours +

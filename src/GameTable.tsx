@@ -184,10 +184,10 @@ export default function GameTable() {
         fontStyle: 'normal',
     }
     return (
-        <div className="flex h-full rubik-font-dropdown">
+        <div className="flex h-full w-full rubik-font-dropdown">
             {!getAllPlayersLoading && (
-                <div className="m-auto flex gap-4 flex-col">
-                    <div className="italic text-white text-8xl mx-auto bebas-neue-title">
+                <div className="m-auto flex gap-4 flex-col mobile:w-full">
+                    <div className="italic text-white  mx-auto bebas-neue-title text-8xl">
                         TURFLE
                     </div>
                     <GuessResultTable guesses={guessResults}></GuessResultTable>
@@ -204,7 +204,11 @@ export default function GameTable() {
                         ))}
                     </div>
                     <Autocomplete
-                        sx={{ minWidth: 350, marginX: 'auto' }}
+                        sx={{
+                            minWidth: { mobile: '80%', tablet: 350 },
+                            marginX: 'auto',
+                        }}
+                        disabled={isGameOver}
                         options={playerValues ?? []}
                         onChange={(_e, newValue) => setSelectedPlayer(newValue)}
                         value={selectedPlayer}
