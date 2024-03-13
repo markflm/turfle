@@ -14,6 +14,7 @@ import {
     getPrevDayCutoffUnix,
 } from './utils/dateTimeProvider'
 import { imageSrcs } from './utils/imageList'
+import { GuessContext } from './contexts/GuessContext'
 
 const guessLimit = 5
 
@@ -314,14 +315,16 @@ export default function GameTable() {
                     src={`${window.location.href}/logos/${img}`}
                 ></img>
             ))} */}
-            <EndGamePopUp
-                guesses={guessResults.length}
-                guessLimit={guessLimit}
-                potdName={potd?.name ?? ''}
-                isOpen={showGameOverModal}
-                correct={guessedCorrectly}
-                onClose={() => setShowGameOverModal(false)}
-            ></EndGamePopUp>
+            <GuessContext.Provider value={guessResults}>
+                <EndGamePopUp
+                    guesses={guessResults.length}
+                    guessLimit={guessLimit}
+                    potdName={potd?.name ?? ''}
+                    isOpen={showGameOverModal}
+                    correct={guessedCorrectly}
+                    onClose={() => setShowGameOverModal(false)}
+                ></EndGamePopUp>
+            </GuessContext.Provider>
             <HowToPlayPopup
                 isOpen={showHowToPlayModal}
                 onClose={() => handleHowToPlayClose()}
