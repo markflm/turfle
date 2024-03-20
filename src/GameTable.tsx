@@ -262,6 +262,9 @@ export default function GameTable() {
                             />
                         )}
                     />
+                    <div className="mx-auto updated-date-text text-white text-center italic">
+                        Player data (age, team, etc) last updated 03/20/2024
+                    </div>
                     <div className="flex mx-auto relative mobile:mb-10">
                         <Button
                             sx={{
