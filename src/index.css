@@ -102,3 +102,8 @@ body {
 .howto-color-card-container > * {
     @apply mobile:p-1 tablet:p-2 rounded-lg;
 }
+
+.updated-date-text {
+    font-size: 0.85rem;
+    line-height: 1rem;
+}
