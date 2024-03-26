@@ -15,6 +15,7 @@ import {
 } from './utils/dateTimeProvider'
 import { imageSrcs } from './utils/imageList'
 import { GuessContext } from './contexts/GuessContext'
+import InfoPopup from './InfoPopup'
 
 const guessLimit = 5
 
@@ -28,8 +29,10 @@ export default function GameTable() {
     const [showGameOverModal, setShowGameOverModal] = useState<boolean>(false)
     const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(false)
     const [autocompleteInput, setAutocompleteInput] = useState<string>('')
-    const [showHowToPlayModal, setShowHowToPlayModal] = useState<boolean>(false)
     const [potdDate, setPotdDate] = useState<string>(getDateInEastern())
+
+    const [showHowToPlayModal, setShowHowToPlayModal] = useState<boolean>(false)
+    const [showInfoModal, setShowInfoModal] = useState<boolean>(true)
 
     const { data: playerValues, isLoading: getAllPlayersLoading } = useQuery(
         ['all_players'],
@@ -304,6 +307,7 @@ export default function GameTable() {
                                 strokeWidth={1.75}
                                 stroke="white"
                                 className="w-8 h-8"
+                                onClick={() => setShowInfoModal(true)}
                             >
                                 <path
                                     strokeLinecap="round"
@@ -336,6 +340,10 @@ export default function GameTable() {
                 isOpen={showHowToPlayModal}
                 onClose={() => handleHowToPlayClose()}
             ></HowToPlayPopup>
+            <InfoPopup
+                isOpen={showInfoModal}
+                onClose={() => setShowInfoModal(false)}
+            ></InfoPopup>
         </div>
     )
 }
