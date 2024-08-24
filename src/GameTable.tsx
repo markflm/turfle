@@ -30,7 +30,7 @@ export default function GameTable() {
     const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(false)
     const [autocompleteInput, setAutocompleteInput] = useState<string>('')
     const [potdDate, setPotdDate] = useState<string>(getDateInEastern())
-    const [potdGuessRow, setPotdGuessRow] = useState<GuessRow>({})
+    const [potdGuessRow, setPotdGuessRow] = useState<GuessRow | any>({})
 
     const [showHowToPlayModal, setShowHowToPlayModal] = useState<boolean>(false)
     const [showInfoModal, setShowInfoModal] = useState<boolean>(false)
@@ -133,10 +133,10 @@ export default function GameTable() {
                     .playerId == potd?.player_id
             ) {
                 setGuessedCorrectly(true)
-                endGameWithAnimationDelay(true)
+                endGameWithAnimationDelay()
             } else if (parsedGuesses.length >= guessLimit) {
                 setGuessedCorrectly(false)
-                endGameWithAnimationDelay(false)
+                endGameWithAnimationDelay()
             }
         }
     }, [getPotdLoading])
@@ -187,7 +187,7 @@ export default function GameTable() {
             setGuessResults(existingGuesses)
             if (guessResult[0].player_id == potd?.player_id) {
                 setGuessedCorrectly(true)
-                endGameWithAnimationDelay(true)
+                endGameWithAnimationDelay()
                 localStorage.setItem('turfle-wl', 'W')
                 return
             }
@@ -196,7 +196,7 @@ export default function GameTable() {
                 setTimeout(() => {
                     existingGuesses.push(potdGuessRow)
                     setGuessResults(existingGuesses)
-                    endGameWithAnimationDelay(false)
+                    endGameWithAnimationDelay()
                     localStorage.setItem('turfle-wl', 'L')
                 }, standardDelayMs * 4)
                 return
@@ -231,7 +231,7 @@ export default function GameTable() {
         setShowHowToPlayModal(false)
     }
 
-    function endGameWithAnimationDelay(isWin: boolean) {
+    function endGameWithAnimationDelay() {
         //wait for animations to play out plus a little extra time to process result, then show game over modal
         setIsGameOver(true)
         setTimeout(() => {

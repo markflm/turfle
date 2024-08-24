@@ -2,12 +2,10 @@ import GuessResultTableRow, { GuessRow } from './GuessResultTableRow'
 import { useCustomMediaQuery } from './hooks/useMediaQuery'
 export type GuessResultTableProps = {
     guesses: GuessRow[]
-    gameLost: boolean
-    potd: GuessRow
 }
 
 export default function GuessResultTable(props: GuessResultTableProps) {
-    const { guesses, gameLost, potd } = props
+    const { guesses } = props
     //todo - replace hardcoded 'ismobile' pixel def
     const isMobile = useCustomMediaQuery('only screen and (max-width : 899px)')
     return isMobile ? (
