@@ -17,7 +17,7 @@ import { imageSrcs } from './utils/imageList'
 import { GuessContext } from './contexts/GuessContext'
 import InfoPopup from './InfoPopup'
 
-const guessLimit = 5
+const guessLimit = 2
 
 export default function GameTable() {
     const firstUpdate = useRef(true)
@@ -30,9 +30,10 @@ export default function GameTable() {
     const [guessedCorrectly, setGuessedCorrectly] = useState<boolean>(false)
     const [autocompleteInput, setAutocompleteInput] = useState<string>('')
     const [potdDate, setPotdDate] = useState<string>(getDateInEastern())
+    const [potdGuessRow, setPotdGuessRow] = useState<GuessRow>({})
 
     const [showHowToPlayModal, setShowHowToPlayModal] = useState<boolean>(false)
-    const [showInfoModal, setShowInfoModal] = useState<boolean>(true)
+    const [showInfoModal, setShowInfoModal] = useState<boolean>(false)
 
     const { data: playerValues, isLoading: getAllPlayersLoading } = useQuery(
         ['all_players'],
@@ -45,11 +46,57 @@ export default function GameTable() {
     const { data: potd, isLoading: getPotdLoading } = useQuery(
         ['potd'],
         async () => {
-            return await getPotd(potdDate)
+            const potdResponse = await getPotd(potdDate)
+            if (!potdResponse) {
+                console.error('No POTD response in fetch')
+                return
+            }
+            //todo 3/27 - alter potd function to return logoURL too
+            // const x = {guessedPlayer: {logoUrl: potd.}} as GuessRow
+
+            return potdResponse
         },
         { staleTime: Infinity }
     )
 
+    useEffect(() => {
+        console.log('double load ue fired')
+        if (potd && playerValues) {
+            setPotdGuessRow({
+                // @ts-ignore
+                guessedPlayer: {
+                    ...potd,
+                    logoUrl:
+                        playerValues.find((x) => x.playerId === potd.player_id)
+                            ?.logoUrl || '',
+                },
+                guessAnswers: [
+                    {
+                        category: 'team',
+                        status: 'correct',
+                        value: {
+                            teamName: potd.team_name,
+                            division: potd.division,
+                            conference: potd.conference,
+                        },
+                    },
+                    {
+                        category: 'age',
+                        status: 'correct',
+                        value: potd.age,
+                    },
+                    {
+                        category: 'position',
+                        status: 'correct',
+                        value: {
+                            position: potd.position_name,
+                            side: potd.position_side,
+                        },
+                    },
+                ],
+            })
+        }
+    }, [getPotdLoading, getAllPlayersLoading])
     const submitGuess = useMutation({
         //@ts-expect-error
         mutationFn: ({ playerId, date }) => checkGuess(playerId, date),
@@ -70,7 +117,7 @@ export default function GameTable() {
 
         const acknowledgedHowToPlay = localStorage.getItem('turfle-how-to-play')
 
-        if (!acknowledgedHowToPlay) setShowHowToPlayModal(true)
+        // if (!acknowledgedHowToPlay) setShowHowToPlayModal(true)
     }, [])
 
     useEffect(() => {
@@ -86,22 +133,20 @@ export default function GameTable() {
                     .playerId == potd?.player_id
             ) {
                 setGuessedCorrectly(true)
-                endGameWithAnimationDelay()
+                endGameWithAnimationDelay(true)
+            } else if (parsedGuesses.length >= guessLimit) {
+                setGuessedCorrectly(false)
+                endGameWithAnimationDelay(false)
             }
         }
     }, [getPotdLoading])
 
     useEffect(() => {
+        //write to localstorage
         if (guessResults.length) {
             localStorage.setItem('turfle-guesses', JSON.stringify(guessResults))
         }
-
-        if (guessedCorrectly) return //if guess was correct, we've already started the end game process
-        if (guessResults.length >= guessLimit) {
-            //trigger game over sequence
-            endGameWithAnimationDelay()
-        }
-    }, [guessResults])
+    }, [guessResults, guessResults.length])
 
     useEffect(() => {
         if (submitGuess.isSuccess) {
@@ -137,11 +182,24 @@ export default function GameTable() {
                     },
                 ],
             })
+
             setSelectedPlayer(null)
             setGuessResults(existingGuesses)
             if (guessResult[0].player_id == potd?.player_id) {
                 setGuessedCorrectly(true)
-                endGameWithAnimationDelay()
+                endGameWithAnimationDelay(true)
+                localStorage.setItem('turfle-wl', 'W')
+                return
+            }
+            if (existingGuesses.length === guessLimit) {
+                setGuessedCorrectly(false)
+                setTimeout(() => {
+                    existingGuesses.push(potdGuessRow)
+                    setGuessResults(existingGuesses)
+                    endGameWithAnimationDelay(false)
+                    localStorage.setItem('turfle-wl', 'L')
+                }, standardDelayMs * 4)
+                return
             }
         }
     }, [submitGuess.isSuccess])
@@ -173,7 +231,7 @@ export default function GameTable() {
         setShowHowToPlayModal(false)
     }
 
-    function endGameWithAnimationDelay() {
+    function endGameWithAnimationDelay(isWin: boolean) {
         //wait for animations to play out plus a little extra time to process result, then show game over modal
         setIsGameOver(true)
         setTimeout(() => {

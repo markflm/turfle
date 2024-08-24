@@ -2,10 +2,12 @@ import GuessResultTableRow, { GuessRow } from './GuessResultTableRow'
 import { useCustomMediaQuery } from './hooks/useMediaQuery'
 export type GuessResultTableProps = {
     guesses: GuessRow[]
+    gameLost: boolean
+    potd: GuessRow
 }
 
 export default function GuessResultTable(props: GuessResultTableProps) {
-    const { guesses } = props
+    const { guesses, gameLost, potd } = props
     //todo - replace hardcoded 'ismobile' pixel def
     const isMobile = useCustomMediaQuery('only screen and (max-width : 899px)')
     return isMobile ? (
@@ -17,6 +19,7 @@ export default function GuessResultTable(props: GuessResultTableProps) {
                     isLastRow={index == guesses.length - 1}
                 ></GuessResultTableRow>
             ))}
+            {}
         </div>
     ) : (
         <div className="my-4 tracking-wide rounded-md bg-slate-800 game-table flex flex-col">
