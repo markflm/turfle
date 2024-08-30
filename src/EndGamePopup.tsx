@@ -32,7 +32,8 @@ export default function EndGamePopUp(props: EndGamePopupProps) {
     function copyResultsToClipboard() {
         navigator.clipboard.writeText(
             `Turfle ${getDateInEastern(0, 'MM/DD/YY')}\n${createEmojiTable(
-                guessResults
+                guessResults,
+                correct
             )}`
         )
     }
@@ -42,7 +43,7 @@ export default function EndGamePopUp(props: EndGamePopupProps) {
             text: `Turfle ${getDateInEastern(
                 0,
                 'MM/DD/YY'
-            )}\n${createEmojiTable(guessResults)}`,
+            )}\n${createEmojiTable(guessResults, correct)}`,
             // url: window.location.href,
         }
         if (navigator.canShare(shareData)) {
@@ -90,7 +91,9 @@ export default function EndGamePopUp(props: EndGamePopupProps) {
                             <div className="my-auto text-xl">
                                 Share Results:
                             </div>
-                            <EmojiResultTable></EmojiResultTable>
+                            <EmojiResultTable
+                                correct={correct}
+                            ></EmojiResultTable>
                         </div>
                         {isiOSMobile ? (
                             <Button

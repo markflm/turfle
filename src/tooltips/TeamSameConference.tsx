@@ -14,8 +14,10 @@ export default function TeamSameConferenceTooltip(
         if (status == 'correct') {
             return (
                 <div>
-                    Player of the day is on the <b>same team</b> (
-                    {`${conferenceName} ${divisionName}`})
+                    Player of the day is on the{' '}
+                    <span className="font-bold">
+                        same team ({`${conferenceName} ${divisionName}`})
+                    </span>
                 </div>
             )
         } else if (status == 'very close') {

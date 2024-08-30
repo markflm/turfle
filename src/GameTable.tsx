@@ -17,7 +17,7 @@ import { imageSrcs } from './utils/imageList'
 import { GuessContext } from './contexts/GuessContext'
 import InfoPopup from './InfoPopup'
 
-const guessLimit = 2
+const guessLimit = 5
 
 export default function GameTable() {
     const firstUpdate = useRef(true)
@@ -51,16 +51,12 @@ export default function GameTable() {
                 console.error('No POTD response in fetch')
                 return
             }
-            //todo 3/27 - alter potd function to return logoURL too
-            // const x = {guessedPlayer: {logoUrl: potd.}} as GuessRow
-
             return potdResponse
         },
         { staleTime: Infinity }
     )
 
     useEffect(() => {
-        console.log('double load ue fired')
         if (potd && playerValues) {
             setPotdGuessRow({
                 // @ts-ignore
@@ -117,7 +113,7 @@ export default function GameTable() {
 
         const acknowledgedHowToPlay = localStorage.getItem('turfle-how-to-play')
 
-        // if (!acknowledgedHowToPlay) setShowHowToPlayModal(true)
+        if (!acknowledgedHowToPlay) setShowHowToPlayModal(true)
     }, [])
 
     useEffect(() => {

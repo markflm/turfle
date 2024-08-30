@@ -20,11 +20,14 @@ function getEmojiForCategoryStatus(status: CategoryStatus) {
     }
 }
 
-export function createEmojiTable(guessResults: GuessRow[]) {
+export function createEmojiTable(guessResults: GuessRow[], isWin: boolean) {
     const tableorder = ['team', 'age', 'position']
+    let displayedResults = guessResults
+
+    if (!isWin) displayedResults = guessResults.slice(0, -1)
 
     let emojiString = ''
-    for (const guess of guessResults) {
+    for (const guess of displayedResults) {
         guess.guessAnswers.sort(
             (a, b) =>
                 tableorder.indexOf(a.category) - tableorder.indexOf(b.category)
@@ -38,11 +41,12 @@ export function createEmojiTable(guessResults: GuessRow[]) {
     return emojiString
 }
 
-export default function EmojiResultTable() {
+export default function EmojiResultTable(props: { correct: boolean }) {
+    const { correct } = props
     const guessResults = useContext(GuessContext)
     return (
         <div className="flex">
-            <pre>{createEmojiTable(guessResults)}</pre>
+            <pre>{createEmojiTable(guessResults, correct)}</pre>
         </div>
     )
 }
