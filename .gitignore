@@ -34,3 +34,5 @@ public/logos/*
 src/utils/sleeperdata.json
 src/utils/sleeper-data_03-20-24.json
 src/utils/insert-data.ts
+
+devnotes.txt

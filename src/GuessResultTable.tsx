@@ -49,7 +49,7 @@ export default function GuessResultTable(props: GuessResultTableProps) {
         <div className="my-4 tracking-wide rounded-md bg-slate-800 game-table flex flex-col">
             <div
                 className={`flex text-white text-left mb-1 ${
-                    guesses.length ? 'border-b' : ''
+                    guesses?.length > 0 ? 'border-b' : ''
                 }`}
             >
                 <div className="w-5/12 border-r p-2 flex">

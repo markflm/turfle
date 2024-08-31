@@ -41,14 +41,16 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
             return (
                 <div
                     id={`guessname_finalrow`}
-                    className=" border-slate-900 py-2  mobile:mx-auto  mobile:h-16 mobile:flex tablet:w-5/12 tablet:border-r-2 tablet:px-2 "
+                    className="border-slate-900 py-2  mobile:mx-auto  mobile:h-16 mobile:flex tablet:w-5/12 tablet:border-r-2 tablet:px-2 opacity-10 bg-gray-300 "
                 ></div>
             )
         }
         return (
             <div
                 id={`guessname_${row.guessedPlayer.playerId}`}
-                className=" border-slate-900 py-2 invisible  mobile:mx-auto  mobile:h-16 mobile:flex tablet:w-5/12 tablet:border-r-2 tablet:px-2 "
+                className={`border-slate-900 py-2  invisible mobile:mx-auto  mobile:h-16 mobile:flex tablet:w-5/12 tablet:border-r-2 tablet:px-2 ${
+                    isLastRow ? 'opacity-10 bg-gray-300' : ''
+                } `}
             >
                 <Box
                     sx={{
@@ -75,7 +77,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
             return (
                 <div
                     id={`guessteam_finalrow`}
-                    className={`border-r-2 border-slate-900 flex p-2 rounded-md cursor-pointer tablet:w-4/12 mobile:w-7/12`}
+                    className={`border-r-2 border-slate-900 flex p-2 rounded-md cursor-pointer tablet:w-4/12 mobile:w-7/12 opacity-10 bg-gray-300 `}
                 ></div>
             )
         }
@@ -93,9 +95,9 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
             >
                 <div
                     id={`guessteam_${row.guessedPlayer.playerId}`}
-                    className={`border-r-2 border-slate-900 flex p-2 invisible rounded-md cursor-pointer tablet:w-4/12 mobile:w-7/12  ${
+                    className={`border-r-2 border-slate-900 flex p-2 invisible rounded-md cursor-pointer tablet:w-4/12 mobile:w-7/12   ${
                         rowStatuses.find((x) => x.cat == 'team')?.color
-                    } `}
+                    } ${isLastRow ? 'opacity-10 bg-gray-300' : ''}`}
                 >
                     <div className="m-auto">
                         {(teamAnswer.value as TeamAnswer).teamName}
@@ -109,7 +111,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
             return (
                 <div
                     id={`guessage_finalrow`}
-                    className={`border-r-2 border-slate-900  flex p-2 rounded-md cursor-pointer mobile:w-3/12 tablet:w-1/12`}
+                    className={`border-r-2 border-slate-900  flex p-2 rounded-md cursor-pointer mobile:w-3/12 tablet:w-1/12 opacity-10 bg-gray-300 `}
                 ></div>
             )
         }
@@ -119,9 +121,9 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
             >
                 <div
                     id={`guessage_${row.guessedPlayer.playerId}`}
-                    className={`border-r-2 border-slate-900  flex p-2 invisible rounded-md cursor-pointer mobile:w-3/12 tablet:w-1/12  ${
+                    className={`border-r-2 border-slate-900 invisible flex p-2 rounded-md cursor-pointer mobile:w-3/12 tablet:w-1/12  ${
                         rowStatuses.find((x) => x.cat == 'age')?.color
-                    } `}
+                    } ${isLastRow ? 'opacity-10 bg-gray-300' : ''}`}
                 >
                     <div className="m-auto flex">
                         <div>{ageAnswer.value as string}</div>
@@ -171,7 +173,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
             return (
                 <div
                     id={`guessposition_finalrow`}
-                    className={` border-slate-900 rounded-md flex p-2 cursor-pointer w-2/12`}
+                    className={` border-slate-900 rounded-md flex p-2 cursor-pointer w-2/12 opacity-10 bg-gray-300 `}
                 ></div>
             )
         }
@@ -188,7 +190,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                     id={`guessposition_${row.guessedPlayer.playerId}`}
                     className={`border-r-2 border-slate-900 rounded-md flex p-2 invisible cursor-pointer w-2/12  ${
                         rowStatuses.find((x) => x.cat == 'position')?.color
-                    } `}
+                    } ${isLastRow ? 'opacity-10 bg-gray-300' : ''}`}
                 >
                     <div className="m-auto">
                         {(positionAnswer.value as PositionAnswer).position}
@@ -201,7 +203,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
     if (!row)
         return (
             <div
-                className={`flex text-white opacity-10 rounded-b-md bg-gray-300 ${
+                className={`flex text-white rounded-b-md ${
                     !isLastRow ? 'border-b-2 border-white' : ''
                 }`}
             >
@@ -264,8 +266,10 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                     )
 
                     element?.classList.add('roll-out')
+
                     setTimeout(() => {
                         element?.classList.remove('invisible')
+                        element?.classList.remove('opacity-10', 'bg-gray-300')
                     }, 400)
                 },
                 i == 0 ? 0 : standardDelayMs * i
@@ -276,7 +280,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
     return (
         <div
             className={`flex text-white border-slate-900 ${
-                !isLastRow ? 'border-b-2' : ''
+                !isLastRow ? 'border-b-2 ' : 'rounded-b-md  '
             }`}
         >
             {isMobile ? (
