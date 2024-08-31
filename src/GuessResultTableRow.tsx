@@ -25,6 +25,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
     const { row, isLastRow } = props
 
     const isMobile = useCustomMediaQuery('only screen and (max-width : 899px)')
+
     useMemo(() => {
         const rowStats: { cat: Categories; color: string }[] = []
         row.guessAnswers.map((ga) => {
