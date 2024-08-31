@@ -184,7 +184,6 @@ export default function GameTable() {
             if (guessResult[0].player_id == potd?.player_id) {
                 setGuessedCorrectly(true)
                 endGameWithAnimationDelay()
-                localStorage.setItem('turfle-wl', 'W')
                 return
             }
             if (existingGuesses.length === guessLimit) {
@@ -193,7 +192,6 @@ export default function GameTable() {
                     existingGuesses.push(potdGuessRow)
                     setGuessResults(existingGuesses)
                     endGameWithAnimationDelay()
-                    localStorage.setItem('turfle-wl', 'L')
                 }, standardDelayMs * 4)
                 return
             }

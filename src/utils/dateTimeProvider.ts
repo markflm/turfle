@@ -13,7 +13,7 @@ export function getDateInEastern(addDays = 0, format?: string) {
 
 export function getPrevDayCutoffUnix() {
     const now = dayjs.tz(getDateInEastern(), 'America/New_York')
-    return now.add(-1, 'day').unix()
+    return now.unix()
 }
 
 export function getTimeTilMidnightEastern() {
