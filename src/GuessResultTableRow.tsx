@@ -41,14 +41,14 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
             return (
                 <div
                     id={`guessname_finalrow`}
-                    className="border-slate-900 py-2  mobile:mx-auto  mobile:h-16 mobile:flex tablet:w-5/12 tablet:border-r-2 tablet:px-2 opacity-10 bg-gray-300 "
+                    className="border-slate-900 py-2 mobile:border-b-2 mobile:mx-auto mobile:w-full  mobile:h-16 mobile:flex tablet:w-5/12 tablet:border-r-2 tablet:px-2 opacity-10 bg-gray-300 "
                 ></div>
             )
         }
         return (
             <div
                 id={`guessname_${row.guessedPlayer.playerId}`}
-                className={`border-slate-900 py-2 mobile:mx-auto mobile:w-full mobile:h-16 mobile:flex tablet:w-5/12 tablet:border-r-2 tablet:px-2 ${
+                className={`border-slate-900 py-2  mobile:mx-auto mobile:w-full  mobile:h-16 mobile:flex tablet:w-5/12 tablet:border-r-2 tablet:px-2 ${
                     isLastRow ? 'opacity-10 bg-gray-300' : 'invisible'
                 } `}
             >
