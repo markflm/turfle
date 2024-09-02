@@ -35,11 +35,6 @@ export default function GuessResultTable(props: GuessResultTableProps) {
                 ></GuessResultTableRow>
             ) : (
                 <></>
-                // <GuessResultTableRow
-                //     key={'nowin'}
-                //     row={correctGuess}
-                //     isLastRow={true}
-                // ></GuessResultTableRow>
             )}
             {}
         </div>
@@ -78,7 +73,6 @@ export default function GuessResultTable(props: GuessResultTableProps) {
                     isLastRow={true}
                 ></GuessResultTableRow>
             ) : (
-                // <></>
                 <GuessResultTableRow
                     key={'nowin'}
                     row={correctGuess}
