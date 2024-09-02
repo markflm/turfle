@@ -309,7 +309,7 @@ export default function GameTable() {
                                     borderRadius: 2,
                                 }}
                                 {...params}
-                                placeholder="Start typing a Player to start"
+                                placeholder="Start typing a Player to begin"
                                 inputProps={{
                                     ...params.inputProps,
                                     style: inputStyle,

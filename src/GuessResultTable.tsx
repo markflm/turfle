@@ -1,4 +1,3 @@
-import { useRef } from 'react'
 import GuessResultTableRow, { GuessRow } from './GuessResultTableRow'
 import { useCustomMediaQuery } from './hooks/useMediaQuery'
 export type GuessResultTableProps = {
@@ -15,7 +14,6 @@ export default function GuessResultTable(props: GuessResultTableProps) {
     let incorrectGuesses
     if (!correctGuess) incorrectGuesses = guesses
     else incorrectGuesses = guesses.slice(0, correctGuessIndex)
-    const prevCorrectGuessState = useRef(correctGuess)
 
     //todo - replace hardcoded 'ismobile' pixel def
     const isMobile = useCustomMediaQuery('only screen and (max-width : 899px)')
@@ -49,7 +47,7 @@ export default function GuessResultTable(props: GuessResultTableProps) {
         <div className="my-4 tracking-wide rounded-md bg-slate-800 game-table flex flex-col">
             <div
                 className={`flex text-white text-left mb-1 ${
-                    guesses?.length > 0 ? 'border-b' : ''
+                    guesses?.length > 0 || !correctGuess ? 'border-b' : ''
                 }`}
             >
                 <div className="w-5/12 border-r p-2 flex">
