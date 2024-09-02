@@ -83,6 +83,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                 ></div>
             )
         }
+        if (!teamAnswer) return <></>
         return (
             <Tooltip
                 title={
@@ -120,6 +121,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                 ></div>
             )
         }
+        if (!ageAnswer) return <></>
         return (
             <Tooltip
                 title={<AgeTooltip status={ageAnswer.status}></AgeTooltip>}
@@ -187,6 +189,7 @@ export default function GuessResultTableRow(props: GuessResultTableRowProps) {
                 ></div>
             )
         }
+        if (!positionAnswer) return <></>
         return (
             <Tooltip
                 title={
